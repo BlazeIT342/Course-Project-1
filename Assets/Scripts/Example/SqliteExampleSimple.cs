@@ -1,27 +1,27 @@
-using Mono.Data.Sqlite; // 1
-using System.Data; // 1
+using Mono.Data.Sqlite;
+using System.Data;
 using UnityEngine;
 
 public class SqliteExampleSimple : MonoBehaviour
 {
     [SerializeField] private int hitCount = 0;
 
-    void Start() // 13
+    void Start()
     {
         // Read all values from the table.
-        IDbConnection dbConnection = CreateAndOpenDatabase(); // 14
-        IDbCommand dbCommandReadValues = dbConnection.CreateCommand(); // 15
-        dbCommandReadValues.CommandText = "SELECT * FROM HitCountTableSimple"; // 16
-        IDataReader dataReader = dbCommandReadValues.ExecuteReader(); // 17
+        IDbConnection dbConnection = CreateAndOpenDatabase();
+        IDbCommand dbCommandReadValues = dbConnection.CreateCommand();
+        dbCommandReadValues.CommandText = "SELECT * FROM HitCountTableSimple";
+        IDataReader dataReader = dbCommandReadValues.ExecuteReader();
 
         while (dataReader.Read())
         {
             // The `id` has index 0, our `hits` have the index 1.
-            hitCount = dataReader.GetInt32(1); // 19
+            hitCount = dataReader.GetInt32(1);
         }
 
         // Remember to always close the connection at the end.
-        dbConnection.Close(); // 20
+        dbConnection.Close();
     }
 
     private void OnMouseDown()
@@ -29,26 +29,26 @@ public class SqliteExampleSimple : MonoBehaviour
         hitCount++;
 
         // Insert hits into the table.
-        IDbConnection dbConnection = CreateAndOpenDatabase(); // 2
-        IDbCommand dbCommandInsertValue = dbConnection.CreateCommand(); // 9
-        dbCommandInsertValue.CommandText = "INSERT OR REPLACE INTO HitCountTableSimple (id, hits) VALUES (0, " + hitCount + ")"; // 10
-        dbCommandInsertValue.ExecuteNonQuery(); // 11
+        IDbConnection dbConnection = CreateAndOpenDatabase();
+        IDbCommand dbCommandInsertValue = dbConnection.CreateCommand();
+        dbCommandInsertValue.CommandText = "INSERT OR REPLACE INTO HitCountTableSimple (id, hits) VALUES (0, " + hitCount + ")";
+        dbCommandInsertValue.ExecuteNonQuery();
 
         // Remember to always close the connection at the end.
-        dbConnection.Close(); // 12
+        dbConnection.Close();
     }
 
-    private IDbConnection CreateAndOpenDatabase() // 3
+    private IDbConnection CreateAndOpenDatabase()
     {
         // Open a connection to the database.
-        string dbUri = "URI=file:MyDatabase.sqlite"; // 4
-        IDbConnection dbConnection = new SqliteConnection(dbUri); // 5
-        dbConnection.Open(); // 6
+        string dbUri = "URI=file:Assets/Resources/Database/ApplicationDatabase.sqlite";
+        IDbConnection dbConnection = new SqliteConnection(dbUri);
+        dbConnection.Open();
 
         // Create a table for the hit count in the database if it does not exist yet.
-        IDbCommand dbCommandCreateTable = dbConnection.CreateCommand(); // 6
-        dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS HitCountTableSimple (id INTEGER PRIMARY KEY, hits INTEGER )"; // 7
-        dbCommandCreateTable.ExecuteReader(); // 8
+        IDbCommand dbCommandCreateTable = dbConnection.CreateCommand();
+        dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS HitCountTableSimple (id INTEGER PRIMARY KEY, hits INTEGER )";
+        dbCommandCreateTable.ExecuteReader();
 
         return dbConnection;
     }
