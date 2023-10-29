@@ -65,7 +65,6 @@ public class UserManager : MonoBehaviour
         dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password) VALUES (@username, @password)";
         dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", username.text));
         dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", password.text));
-        //dbCommandInsertUser.Parameters.Add(new SqliteParameter("@administrator", 0));
         dbCommandInsertUser.ExecuteNonQuery();
 
         return true;
