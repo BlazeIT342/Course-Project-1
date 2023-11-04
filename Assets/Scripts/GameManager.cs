@@ -9,33 +9,40 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject RegistrationMenu;
     [SerializeField] GameObject MainMenu;
     [SerializeField] GameObject AccountData;
+    [SerializeField] GameObject RecordTable;
 
     public void OnRegisterButtonClick()
     {
-        bool registrationSuccess = UserManager.RegisterUser();
+        var registrationSuccess = UserManager.RegisterUser();
     }
 
     public void OnLoginButtonClick()
     {
-        bool loginSuccess = UserManager.LoginUser();
+        var loginSuccess = UserManager.LoginUser();
 
         if (loginSuccess)
         {
-            RegistrationMenu.SetActive(false);
-            MainMenu.SetActive(true);
+            RegistrationMenu.SetActive(!RegistrationMenu.activeSelf);
+            MainMenu.SetActive(!MainMenu.activeSelf);
         }
     }
 
-    public void OnPersonalPageButtonClick()
+    public void OnPersonalPageToggle()
     {
-        MainMenu.SetActive(false);
-        AccountData.SetActive(true);
+        MainMenu.SetActive(!MainMenu.activeSelf);
+        AccountData.SetActive(!AccountData.activeSelf);
     }
 
-    public void OnPersonalPageButtonClickUndo()
+    public void OnRecordPageToggle()
     {
-        MainMenu.SetActive(true);
-        AccountData.SetActive(false);
+        MainMenu.SetActive(!MainMenu.activeSelf);
+        RecordTable.SetActive(!RecordTable.activeSelf);
+    }
+
+    public void SignOut()
+    {
+        AccountData.SetActive(!AccountData.activeSelf);
+        RegistrationMenu.SetActive(!RegistrationMenu.activeSelf);
     }
 
     public void Quit()

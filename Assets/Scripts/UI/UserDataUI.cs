@@ -25,16 +25,22 @@ public class UserDataUI : MonoBehaviour
     }
     private void ChangePassword()
     {
-        GameManager.UserManager.UpdatePassword(GameManager.UserManager.CurrentUserId, _passwordField.text);
-        //GameManager.UserManager.UpdatePassword(GameManager.UserManager.CurrentUserId, _passwordField.text);
-        UpdateUI();
+        var canChangePassword = GameManager.UserManager.UpdatePassword(_passwordField.text);
+        
+        if (canChangePassword)
+        {
+            UpdateUI();
+        }
     }
 
     private void UpdateUI()
     {
-        AccountId.text = "Account ID: " + GameManager.UserManager.CurrentUserId.ToString();
-        Name.text = "Name: " + GameManager.UserManager.Username;
-        CurrentPassword.text = "Current password: " + GameManager.UserManager.Password;
-        Role.text = "Role: " + GameManager.UserManager.Role;
+        var user = GameManager.UserManager.CurrentUserData;
+
+        AccountId.text = "Account ID: " + user.Id;
+        Name.text = "Username: " + user.Username;
+        CurrentPassword.text = "Current password: " + user.Password;
+        Role.text = "Role: " + user.Role;
+        _passwordField.text = "";
     }
 }

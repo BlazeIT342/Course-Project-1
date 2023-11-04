@@ -1,5 +1,6 @@
 using Mono.Data.Sqlite;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -8,18 +9,16 @@ using UnityEngine.UI;
 
 public class UserManager : MonoBehaviour
 {
-    public int CurrentUserId;
-    public string Username;
-    public string Password;
-    public string Role;
+    public UserData CurrentUserData;
 
     [SerializeField] private TMP_InputField _usernameField;
     [SerializeField] private TMP_InputField _passwordField;
     [SerializeField] private Toggle AdministratorToggle;
+    [SerializeField] private TextMeshProUGUI textMessage;
 
     private IDbConnection dbConnection;
 
-    private void Start()
+    private void OnEnable()
     {
         dbConnection = CreateAndOpenDatabase();
         InitializeDatabase();
@@ -30,24 +29,17 @@ public class UserManager : MonoBehaviour
         dbConnection.Close();
     }
 
-    private void InitializeDatabase()
-    {
-        IDbCommand dbCommandCreateTable = dbConnection.CreateCommand();
-        dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, administrator INTEGER DEFAULT 0)";
-        dbCommandCreateTable.ExecuteNonQuery();
-    }
-
     public bool RegisterUser()
     {
         if (!IsUsernameValid(_usernameField.text))
         {
-            Debug.Log("Invalid _usernameField. It should consist of 5-20 alphanumeric characters.");
+            ShowMessage("Invalid username. It should consist of 5-20 alphanumeric characters.");
             return false;
         }
 
         if (!IsPasswordValid(_passwordField.text))
         {
-            Debug.Log("Invalid _passwordField. It should be 4-20 characters long.");
+            ShowMessage("Invalid password. It should be 4-20 characters long.");
             return false;
         }
 
@@ -59,19 +51,19 @@ public class UserManager : MonoBehaviour
 
         if (count > 0)
         {
-            Debug.Log("User already exists!");
+            ShowMessage("User already exists!");
             return false;
         }
         else
         {
-            Debug.Log("Registration successful");
+            ShowMessage("Registration successful");
         }
 
         IDbCommand dbCommandInsertUser = dbConnection.CreateCommand();
-        dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, administrator) VALUES (@username, @password, @administrator)";
+        dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, role) VALUES (@username, @password, @role)";
         dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", _usernameField.text));
         dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", _passwordField.text));
-        dbCommandInsertUser.Parameters.Add(new SqliteParameter("@administrator", AdministratorToggle.isOn ? 1 : 0));
+        dbCommandInsertUser.Parameters.Add(new SqliteParameter("@role", AdministratorToggle.isOn ? "Administrator" : "User"));
         dbCommandInsertUser.ExecuteNonQuery();
 
         return true;
@@ -81,13 +73,13 @@ public class UserManager : MonoBehaviour
     {
         if (!IsUsernameValid(_usernameField.text))
         {
-            Debug.Log("Invalid Username. It should consist of 5-20 alphanumeric characters.");
+            ShowMessage("Invalid Username. It should consist of 5-20 alphanumeric characters.");
             return false;
         }
 
         if (!IsPasswordValid(_passwordField.text))
         {
-            Debug.Log("Invalid Password. It should be 4-20 characters long.");
+            ShowMessage("Invalid Password. It should be 4-20 characters long.");
             return false;
         }
 
@@ -100,13 +92,13 @@ public class UserManager : MonoBehaviour
 
         if (count > 0)
         {
-            LoadUserData(_usernameField.text);
-            Debug.Log("Login successful! " + CurrentUserId);
+            CurrentUserData = GetUserDataByUsername(_usernameField.text);
+            ShowMessage("Login successful! " + CurrentUserData.Id);
             return true;
         }
         else
         {
-            Debug.Log("Invalid Username or Password.");
+            ShowMessage("Invalid Username or Password.");
             return false;
         }
     }
@@ -130,46 +122,113 @@ public class UserManager : MonoBehaviour
         }
     }
 
-    public void LoadUserData(string username)
+    public UserData GetUserDataByUsername(string username)
     {
-        var id = GetUserIdByUsername(username);
         if (username != null)
         {
             IDbCommand dbCommand = dbConnection.CreateCommand();
-            dbCommand.CommandText = "SELECT * FROM Users WHERE id=@UserId";
-            dbCommand.Parameters.Add(new SqliteParameter("@UserId", id));
+            dbCommand.CommandText = "SELECT * FROM Users WHERE username=@Username";
+            dbCommand.Parameters.Add(new SqliteParameter("@Username", username));
 
             IDataReader reader = dbCommand.ExecuteReader();
 
             if (reader.Read())
             {
-                CurrentUserId = reader.GetInt32(0);
-                Username = reader.GetString(1);
-                Password = reader.GetString(2);
-                Role = reader.GetInt32(3) == 1 ? "Administrator" : "User";
-            }
+                UserData user = new()
+                {
+                    Id = reader.GetInt32(0),
+                    Username = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    Role = reader.GetString(3),
+                    Record = reader.GetInt32(4),
+                };
 
-            reader.Close();
+                reader.Close();
+
+                return user;
+            }
+        }
+
+        ShowMessage("User with this username not found");
+        return new UserData();
+    }
+
+    /// <summary>
+    /// Allowed Parameters: "Id", "Username", "Password", "Role", "Record"
+    /// </summary>
+    /// <param name="parameter"></param>
+    /// <returns></returns>
+    public List<UserData> GetAllUsersSortedByParameter(ColumnType type)
+    {
+        var usersList = new List<UserData>();
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+
+        if (type == ColumnType.Record)
+        {
+            dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type} DESC";
         }
         else
         {
-            Debug.Log("ѕользователь с таким именем не найден");
+            dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type}";
         }
+
+        IDataReader reader = dbCommand.ExecuteReader();
+
+        while (reader.Read())
+        {
+            UserData user = new()
+            {
+                Id = reader.GetInt32(0),
+                Username = reader.GetString(1),
+                Password = reader.GetString(2),
+                Role = reader.GetString(3),
+                Record = reader.GetInt32(4),
+            };
+
+            usersList.Add(user);
+        }
+
+        reader.Close();
+
+        return usersList;
     }
 
-    public void UpdatePassword(int userId, string newPassword)
+    public bool UpdatePassword(string newPassword)
     {
+        if (!IsPasswordValid(newPassword))
+        {
+            ShowMessage("Invalid password. It should be 4-20 characters long.");
+            return false;
+        }
+
         IDbCommand dbCommand = dbConnection.CreateCommand();
         dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE id=@UserId";
         dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
-        dbCommand.Parameters.Add(new SqliteParameter("@UserId", userId));
+        dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
 
         dbCommand.ExecuteNonQuery();
 
-        LoadUserData(Username);
+        CurrentUserData.Password = newPassword;
+        ShowMessage("Successful password change! Your new password: " + newPassword);
+        return true;
+    }
+
+    public void ClearUserData()
+    {
+        IDbCommand dbCommandClearData = dbConnection.CreateCommand();
+        dbCommandClearData.CommandText = "DELETE FROM Users";
+        dbCommandClearData.ExecuteNonQuery();
+        ShowMessage("All user data cleared.");
     }
 
     // ... ƒругие методы взаимодействи€ с базой данных ...
+
+    private void InitializeDatabase()
+    {
+        IDbCommand dbCommandCreateTable = dbConnection.CreateCommand();
+        dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT DEFAULT User, record INTEGER DEFAULT 0)";
+        dbCommandCreateTable.ExecuteNonQuery();
+    }
 
     private IDbConnection CreateAndOpenDatabase()
     {
@@ -192,12 +251,10 @@ public class UserManager : MonoBehaviour
         return Regex.IsMatch(password, pattern);
     }
 
-
-    public void ClearUserData()
+    private void ShowMessage(string text)
     {
-        IDbCommand dbCommandClearData = dbConnection.CreateCommand();
-        dbCommandClearData.CommandText = "DELETE FROM Users";
-        dbCommandClearData.ExecuteNonQuery();
-        Debug.Log("All user data cleared.");
+        textMessage.text = text;
+        textMessage.GetComponent<Animation>().Stop();
+        textMessage.GetComponent<Animation>().Play();
     }
 }
