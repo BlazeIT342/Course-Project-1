@@ -232,7 +232,7 @@ public class UserManager : MonoBehaviour
 
     private IDbConnection CreateAndOpenDatabase()
     {
-        string dbUri = "URI=file:Assets/Resources/Database/ApplicationDatabase.sqlite";
+        string dbUri = "URI=file:ApplicationDatabase.sqlite";
         IDbConnection dbConnection = new SqliteConnection(dbUri);
         dbConnection.Open();
 

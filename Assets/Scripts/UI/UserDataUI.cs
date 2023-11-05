@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UserDataUI : MonoBehaviour
 {
-    [SerializeField] GameManager GameManager;
+    [SerializeField] UserManager UserManager;
     [SerializeField] TextMeshProUGUI AccountId;
     [SerializeField] TextMeshProUGUI Name;
     [SerializeField] TextMeshProUGUI CurrentPassword;
@@ -25,7 +25,7 @@ public class UserDataUI : MonoBehaviour
     }
     private void ChangePassword()
     {
-        var canChangePassword = GameManager.UserManager.UpdatePassword(_passwordField.text);
+        var canChangePassword = UserManager.UpdatePassword(_passwordField.text);
         
         if (canChangePassword)
         {
@@ -35,7 +35,7 @@ public class UserDataUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        var user = GameManager.UserManager.CurrentUserData;
+        var user = UserManager.CurrentUserData;
 
         AccountId.text = "Account ID: " + user.Id;
         Name.text = "Username: " + user.Username;
