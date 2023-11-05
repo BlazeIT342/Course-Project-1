@@ -9,8 +9,8 @@ public class UserDataUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI Name;
     [SerializeField] TextMeshProUGUI CurrentPassword;
     [SerializeField] TextMeshProUGUI Role;
-    [SerializeField] private TMP_InputField _passwordField;
-    [SerializeField] private Button _passwordButton;
+    [SerializeField] TMP_InputField _passwordField;
+    [SerializeField] Button _passwordButton;
 
     private void OnEnable()
     {
