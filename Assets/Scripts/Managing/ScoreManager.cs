@@ -8,10 +8,11 @@ namespace Project.Managing
         [SerializeField] private UserManager _userManager;
         [SerializeField] private TextMeshProUGUI _textField;
 
-        private int score = 0;
+        private int score;
 
         private void OnEnable()
         {
+            score = 0;
             _textField.text = " Score: " + score.ToString();
 
             GameEventManager.Instance.OnAddNewCube.AddListener(AddScore);

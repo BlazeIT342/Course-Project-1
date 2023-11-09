@@ -30,7 +30,7 @@ namespace Project.UI.Game
             GameEventManager.Instance.OnGameEnd.RemoveListener(OnGameEnd);
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (Input.GetMouseButtonDown(0) && !_isFirstTouch)
             {
