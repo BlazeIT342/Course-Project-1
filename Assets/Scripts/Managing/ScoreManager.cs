@@ -5,16 +5,37 @@ namespace Project.Managing
 {
     public class ScoreManager : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI _textField;
+        [SerializeField] private UserManager _userManager;
+        [SerializeField] private TextMeshProUGUI _textField;
+
+        private int score = 0;
 
         private void OnEnable()
         {
+            _textField.text = " Score: " + score.ToString();
 
+            GameEventManager.Instance.OnAddNewCube.AddListener(AddScore);
+            GameEventManager.Instance.OnCollisionWall.AddListener(AddScore);
+            GameEventManager.Instance.OnGameEnd.AddListener(TrySetRecord);
         }
 
         private void OnDisable()
         {
+            GameEventManager.Instance.OnAddNewCube.RemoveListener(AddScore);
+            GameEventManager.Instance.OnCollisionWall.RemoveListener(AddScore);
+            GameEventManager.Instance.OnGameEnd.RemoveListener(TrySetRecord);
+        }
 
+        private void AddScore(bool isGameRunning)
+        {
+            score += 5;
+
+            _textField.text = " Score: " + score.ToString();
+        }
+
+        private void TrySetRecord(bool isGameRunning)
+        {
+            _userManager.TrySetNewRecord(score);
         }
     }
 }

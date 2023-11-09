@@ -108,25 +108,6 @@ namespace Project.Managing
             }
         }
 
-        public int GetUserIdByUsername(string searchUsername)
-        {
-            IDbCommand dbCommand = _dbConnection.CreateCommand();
-            dbCommand.CommandText = "SELECT _id FROM Users WHERE username=@username";
-            dbCommand.Parameters.Add(new SqliteParameter("@username", searchUsername));
-
-            object result = dbCommand.ExecuteScalar();
-
-            if (result != null)
-            {
-                int userId = Convert.ToInt32(result);
-                return userId;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-
         public UserData GetUserDataByUsername(string username)
         {
             if (username != null)
@@ -206,7 +187,7 @@ namespace Project.Managing
             }
 
             IDbCommand dbCommand = _dbConnection.CreateCommand();
-            dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE _id=@UserId";
+            dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE id=@UserId";
             dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
             dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
 
@@ -222,6 +203,14 @@ namespace Project.Managing
             CurrentUserData = new();
         }
 
+        public void TrySetNewRecord(int score)
+        {
+            if (CurrentUserData.Record < score)
+            {
+                _userData.Record = score;
+            }
+        }
+
         public void ClearUserData()
         {
             IDbCommand dbCommandClearData = _dbConnection.CreateCommand();
@@ -235,7 +224,7 @@ namespace Project.Managing
         private void InitializeDatabase()
         {
             IDbCommand dbCommandCreateTable = _dbConnection.CreateCommand();
-            dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (_id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT DEFAULT User, _record INTEGER DEFAULT 0)";
+            dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT DEFAULT User, record INTEGER DEFAULT 0)";
             dbCommandCreateTable.ExecuteNonQuery();
         }
 
