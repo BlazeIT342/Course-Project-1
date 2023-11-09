@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - VirtualCamera
+  - Menu
+  - Core
+  - Wall
+  - CubePickup
+  - CubeObject
   layers:
   - Default
   - TransparentFX

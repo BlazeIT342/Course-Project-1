@@ -1,7 +1,7 @@
-﻿using TZ.EventController;
+﻿using Project.Managing;
 using UnityEngine;
 
-namespace TZ.Core
+namespace Project.Game
 {
     public class GameOver : MonoBehaviour
     {
@@ -9,7 +9,7 @@ namespace TZ.Core
         {
             if (collision.gameObject.CompareTag("Wall"))
             {
-                GameEventManager.instance.EndGame();
+                GameEventManager.Instance.EndGame();
             }
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TZ.Cameras
+namespace Project.Game
 {
     public class CameraFacing : MonoBehaviour
     {

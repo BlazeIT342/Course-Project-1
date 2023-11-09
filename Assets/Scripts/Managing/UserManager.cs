@@ -1,138 +1,184 @@
 using Mono.Data.Sqlite;
+using Project.UI.Menu;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class UserManager : MonoBehaviour
+namespace Project.Managing
 {
-    public UserData CurrentUserData;
-
-    [SerializeField] private TMP_InputField _usernameField;
-    [SerializeField] private TMP_InputField _passwordField;
-    [SerializeField] private Toggle AdministratorToggle;
-    [SerializeField] private TextMeshProUGUI textMessage;
-
-    private IDbConnection dbConnection;
-
-    private void OnEnable()
+    public class UserManager : MonoBehaviour
     {
-        dbConnection = CreateAndOpenDatabase();
-        InitializeDatabase();
-    }
+        private UserData _userData = new();
 
-    private void OnDestroy()
-    {
-        dbConnection.Close();
-    }
-
-    public bool RegisterUser()
-    {
-        if (!IsUsernameValid(_usernameField.text))
+        public UserData CurrentUserData
         {
-            ShowMessage("Invalid username. It should consist of 5-20 alphanumeric characters.");
-            return false;
+            get => _userData;
+            set
+            {
+                _userData = value;
+                PlayerPrefs.SetString("username", value.Username);
+            }
         }
 
-        if (!IsPasswordValid(_passwordField.text))
+        private IDbConnection _dbConnection;
+
+        private void OnEnable()
         {
-            ShowMessage("Invalid password. It should be 4-20 characters long.");
-            return false;
+            _dbConnection = CreateAndOpenDatabase();
+            InitializeDatabase();
+
+            CurrentUserData = GetUserDataByUsername(PlayerPrefs.GetString("username"));
         }
 
-        IDbCommand dbCommandCheckUser = dbConnection.CreateCommand();
-        dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username";
-        dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", _usernameField.text));
-
-        int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
-
-        if (count > 0)
+        private void OnDestroy()
         {
-            ShowMessage("User already exists!");
-            return false;
-        }
-        else
-        {
-            ShowMessage("Registration successful");
+            _dbConnection.Close();
         }
 
-        IDbCommand dbCommandInsertUser = dbConnection.CreateCommand();
-        dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, role) VALUES (@username, @password, @role)";
-        dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", _usernameField.text));
-        dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", _passwordField.text));
-        dbCommandInsertUser.Parameters.Add(new SqliteParameter("@role", AdministratorToggle.isOn ? "Administrator" : "User"));
-        dbCommandInsertUser.ExecuteNonQuery();
-
-        return true;
-    }
-
-    public bool LoginUser()
-    {
-        if (!IsUsernameValid(_usernameField.text))
+        public bool TryRegisterUser(string username, string password, bool isAdministrator)
         {
-            ShowMessage("Invalid Username. It should consist of 5-20 alphanumeric characters.");
-            return false;
-        }
+            if (!IsUsernameValid(username))
+            {
+                ShowMessage("Invalid username. It should consist of 5-20 alphanumeric characters.");
+                return false;
+            }
 
-        if (!IsPasswordValid(_passwordField.text))
-        {
-            ShowMessage("Invalid Password. It should be 4-20 characters long.");
-            return false;
-        }
+            if (!IsPasswordValid(password))
+            {
+                ShowMessage("Invalid password. It should be 4-20 characters long.");
+                return false;
+            }
 
-        IDbCommand dbCommandCheckUser = dbConnection.CreateCommand();
-        dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username AND password=@password";
-        dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", _usernameField.text));
-        dbCommandCheckUser.Parameters.Add(new SqliteParameter("@password", _passwordField.text));
+            IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
+            dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username";
+            dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
 
-        int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
+            int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
 
-        if (count > 0)
-        {
-            CurrentUserData = GetUserDataByUsername(_usernameField.text);
-            ShowMessage("Login successful! " + CurrentUserData.Id);
+            if (count > 0)
+            {
+                ShowMessage("User already exists!");
+                return false;
+            }
+
+            IDbCommand dbCommandInsertUser = _dbConnection.CreateCommand();
+            dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, role) VALUES (@username, @password, @role)";
+            dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", username));
+            dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", password));
+            dbCommandInsertUser.Parameters.Add(new SqliteParameter("@role", isAdministrator ? "Administrator" : "User"));
+            dbCommandInsertUser.ExecuteNonQuery();
+
+            CurrentUserData = GetUserDataByUsername(username);
+
             return true;
         }
-        else
+
+        public bool TryLoginUser(string username, string password)
         {
-            ShowMessage("Invalid Username or Password.");
-            return false;
+            if (!IsUsernameValid(username))
+            {
+                ShowMessage("Invalid Username. It should consist of 5-20 alphanumeric characters.");
+                return false;
+            }
+
+            if (!IsPasswordValid(password))
+            {
+                ShowMessage("Invalid Password. It should be 4-20 characters long.");
+                return false;
+            }
+
+            IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
+            dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username AND password=@password";
+            dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
+            dbCommandCheckUser.Parameters.Add(new SqliteParameter("@password", password));
+
+            int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
+
+            if (count > 0)
+            {
+                CurrentUserData = GetUserDataByUsername(username);
+                return true;
+            }
+            else
+            {
+                ShowMessage("Invalid Username or Password.");
+                return false;
+            }
         }
-    }
 
-    public int GetUserIdByUsername(string searchUsername)
-    {
-        IDbCommand dbCommand = dbConnection.CreateCommand();
-        dbCommand.CommandText = "SELECT id FROM Users WHERE username=@username";
-        dbCommand.Parameters.Add(new SqliteParameter("@username", searchUsername));
-
-        object result = dbCommand.ExecuteScalar();
-
-        if (result != null)
+        public int GetUserIdByUsername(string searchUsername)
         {
-            int userId = Convert.ToInt32(result);
-            return userId;
+            IDbCommand dbCommand = _dbConnection.CreateCommand();
+            dbCommand.CommandText = "SELECT _id FROM Users WHERE username=@username";
+            dbCommand.Parameters.Add(new SqliteParameter("@username", searchUsername));
+
+            object result = dbCommand.ExecuteScalar();
+
+            if (result != null)
+            {
+                int userId = Convert.ToInt32(result);
+                return userId;
+            }
+            else
+            {
+                return -1;
+            }
         }
-        else
-        {
-            return -1;
-        }
-    }
 
-    public UserData GetUserDataByUsername(string username)
-    {
-        if (username != null)
+        public UserData GetUserDataByUsername(string username)
         {
-            IDbCommand dbCommand = dbConnection.CreateCommand();
-            dbCommand.CommandText = "SELECT * FROM Users WHERE username=@Username";
-            dbCommand.Parameters.Add(new SqliteParameter("@Username", username));
+            if (username != null)
+            {
+                IDbCommand dbCommand = _dbConnection.CreateCommand();
+                dbCommand.CommandText = "SELECT * FROM Users WHERE username=@Username";
+                dbCommand.Parameters.Add(new SqliteParameter("@Username", username));
+
+                IDataReader reader = dbCommand.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    UserData user = new()
+                    {
+                        Id = reader.GetInt32(0),
+                        Username = reader.GetString(1),
+                        Password = reader.GetString(2),
+                        Role = reader.GetString(3),
+                        Record = reader.GetInt32(4),
+                    };
+
+                    reader.Close();
+
+                    return user;
+                }
+            }
+
+            return new UserData();
+        }
+
+        /// <summary>
+        /// Allowed Parameters: "Id", "Username", "Password", "_role", "Record"
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public List<UserData> GetAllUsersSortedByParameter(ColumnType type)
+        {
+            var usersList = new List<UserData>();
+            IDbCommand dbCommand = _dbConnection.CreateCommand();
+
+            if (type == ColumnType.Record)
+            {
+                dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type} DESC";
+            }
+            else
+            {
+                dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type}";
+            }
 
             IDataReader reader = dbCommand.ExecuteReader();
 
-            if (reader.Read())
+            while (reader.Read())
             {
                 UserData user = new()
                 {
@@ -143,118 +189,82 @@ public class UserManager : MonoBehaviour
                     Record = reader.GetInt32(4),
                 };
 
-                reader.Close();
-
-                return user;
+                usersList.Add(user);
             }
+
+            reader.Close();
+
+            return usersList;
         }
 
-        ShowMessage("User with this username not found");
-        return new UserData();
-    }
-
-    /// <summary>
-    /// Allowed Parameters: "Id", "Username", "Password", "Role", "Record"
-    /// </summary>
-    /// <param name="parameter"></param>
-    /// <returns></returns>
-    public List<UserData> GetAllUsersSortedByParameter(ColumnType type)
-    {
-        var usersList = new List<UserData>();
-        IDbCommand dbCommand = dbConnection.CreateCommand();
-
-        if (type == ColumnType.Record)
+        public bool UpdatePassword(string newPassword)
         {
-            dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type} DESC";
-        }
-        else
-        {
-            dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type}";
-        }
-
-        IDataReader reader = dbCommand.ExecuteReader();
-
-        while (reader.Read())
-        {
-            UserData user = new()
+            if (!IsPasswordValid(newPassword))
             {
-                Id = reader.GetInt32(0),
-                Username = reader.GetString(1),
-                Password = reader.GetString(2),
-                Role = reader.GetString(3),
-                Record = reader.GetInt32(4),
-            };
+                ShowMessage("Invalid password. It should be 4-20 characters long.");
+                return false;
+            }
 
-            usersList.Add(user);
+            IDbCommand dbCommand = _dbConnection.CreateCommand();
+            dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE _id=@UserId";
+            dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
+            dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
+
+            dbCommand.ExecuteNonQuery();
+
+            _userData.Password = newPassword;
+            ShowMessage("Successful password change! Your new password: " + newPassword);
+            return true;
         }
 
-        reader.Close();
-
-        return usersList;
-    }
-
-    public bool UpdatePassword(string newPassword)
-    {
-        if (!IsPasswordValid(newPassword))
+        public void Logout()
         {
-            ShowMessage("Invalid password. It should be 4-20 characters long.");
-            return false;
+            CurrentUserData = new();
         }
 
-        IDbCommand dbCommand = dbConnection.CreateCommand();
-        dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE id=@UserId";
-        dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
-        dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
+        public void ClearUserData()
+        {
+            IDbCommand dbCommandClearData = _dbConnection.CreateCommand();
+            dbCommandClearData.CommandText = "DELETE FROM Users";
+            dbCommandClearData.ExecuteNonQuery();
+            ShowMessage("All user data cleared.");
+        }
 
-        dbCommand.ExecuteNonQuery();
+        // ... Другие методы взаимодействия с базой данных ...
 
-        CurrentUserData.Password = newPassword;
-        ShowMessage("Successful password change! Your new password: " + newPassword);
-        return true;
-    }
+        private void InitializeDatabase()
+        {
+            IDbCommand dbCommandCreateTable = _dbConnection.CreateCommand();
+            dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (_id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT DEFAULT User, _record INTEGER DEFAULT 0)";
+            dbCommandCreateTable.ExecuteNonQuery();
+        }
 
-    public void ClearUserData()
-    {
-        IDbCommand dbCommandClearData = dbConnection.CreateCommand();
-        dbCommandClearData.CommandText = "DELETE FROM Users";
-        dbCommandClearData.ExecuteNonQuery();
-        ShowMessage("All user data cleared.");
-    }
+        private IDbConnection CreateAndOpenDatabase()
+        {
+            string dbUri = "URI=file:ApplicationDatabase.sqlite";
+            IDbConnection dbConnection = new SqliteConnection(dbUri);
+            dbConnection.Open();
 
-    // ... Другие методы взаимодействия с базой данных ...
+            return dbConnection;
+        }
 
-    private void InitializeDatabase()
-    {
-        IDbCommand dbCommandCreateTable = dbConnection.CreateCommand();
-        dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT DEFAULT User, record INTEGER DEFAULT 0)";
-        dbCommandCreateTable.ExecuteNonQuery();
-    }
+        private bool IsUsernameValid(string username)
+        {
+            string pattern = "^[\\S]{5,20}$";
+            return Regex.IsMatch(username, pattern);
+        }
 
-    private IDbConnection CreateAndOpenDatabase()
-    {
-        string dbUri = "URI=file:ApplicationDatabase.sqlite";
-        IDbConnection dbConnection = new SqliteConnection(dbUri);
-        dbConnection.Open();
+        private bool IsPasswordValid(string password)
+        {
+            string pattern = "^[\\S]{4,20}$";
+            return Regex.IsMatch(password, pattern);
+        }
 
-        return dbConnection;
-    }
-
-    private bool IsUsernameValid(string username)
-    {
-        string pattern = "^[\\S]{5,20}$";
-        return Regex.IsMatch(username, pattern);
-    }
-
-    private bool IsPasswordValid(string password)
-    {
-        string pattern = "^[\\S]{4,20}$";
-        return Regex.IsMatch(password, pattern);
-    }
-
-    private void ShowMessage(string text)
-    {
-        textMessage.text = text;
-        textMessage.GetComponent<Animation>().Stop();
-        textMessage.GetComponent<Animation>().Play();
+        private void ShowMessage(string text)
+        {
+            var message = GameObject.Find("Message").GetComponent<MessageUI>();
+            message.ShowMessage(text);
+            message.gameObject.SetActive(true);
+        }
     }
 }

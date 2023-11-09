@@ -484,6 +484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7dab224498cc94382fbba5bbf4fb31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: {fileID: 4948804339320484675}
-  nickname: {fileID: 6376205512026400452}
-  record: {fileID: 7911313902093343241}
+  _id: {fileID: 4948804339320484675}
+  _nickname: {fileID: 6376205512026400452}
+  _record: {fileID: 7911313902093343241}

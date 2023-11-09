@@ -1,7 +1,7 @@
-using TZ.EventController;
+using Project.Managing;
 using UnityEngine;
 
-namespace TZ.Cubes
+namespace Project.Game
 {
     public class Cube : MonoBehaviour
     {
@@ -9,13 +9,14 @@ namespace TZ.Cubes
         {
             if (collision.gameObject.CompareTag("Wall"))
             {
-                GameEventManager.instance.CollisionWall();
+                GameEventManager.Instance.CollisionWall();
 
                 StartCoroutine(GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<CubeHolder>().RemoveCube(this));
             }
+
             if (collision.gameObject.CompareTag("CubePickup"))
             {
-                GameEventManager.instance.AddNewCube();
+                GameEventManager.Instance.AddNewCube();
                 Destroy(collision.gameObject);
             }
         }
