@@ -208,6 +208,15 @@ namespace Project.Managing
             if (CurrentUserData.Record < score)
             {
                 _userData.Record = score;
+
+                IDbCommand dbCommand = _dbConnection.CreateCommand();
+                dbCommand.CommandText = "UPDATE Users SET record=@NewRecord WHERE id=@UserId";
+                dbCommand.Parameters.Add(new SqliteParameter("@NewRecord", _userData.Record));
+                dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
+
+                dbCommand.ExecuteNonQuery();
+
+                ShowMessage("Congratulations! New Record: " + _userData.Record);
             }
         }
 
