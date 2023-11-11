@@ -1,6 +1,7 @@
 using System.Collections;
 using NUnit.Framework;
-using Project.Managing;
+using Project.Database;
+using Project.Database.Mock;
 using UnityEngine.TestTools;
 
 namespace Project.Testing
@@ -13,7 +14,7 @@ namespace Project.Testing
             // Arrange
             MockDbConnection mockDbConnection = new();
 
-            var userManager = new UserManager(mockDbConnection.CreateAndOpenDatabase());
+            var userManager = new DatabaseController(mockDbConnection.CreateAndOpenDatabase());
 
             // Act
             bool result = userManager.TryRegisterUser("NewUser", "Password123", false);
@@ -31,7 +32,7 @@ namespace Project.Testing
             // Arrange
             MockDbConnection mockDbConnection = new();
 
-            var userManager = new UserManager(mockDbConnection.CreateAndOpenDatabase());
+            var userManager = new DatabaseController(mockDbConnection.CreateAndOpenDatabase());
 
             // Register a user first
             userManager.TryRegisterUser("ExistingUser", "Password123", false);

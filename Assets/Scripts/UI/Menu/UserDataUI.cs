@@ -1,3 +1,4 @@
+using Project.Database;
 using Project.Managing;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,6 @@ namespace Project.UI.Menu
 {
     public class UserDataUI : MonoBehaviour
     {
-        private UserManager _userManager;
         [SerializeField] private TextMeshProUGUI _accountId;
         [SerializeField] private TextMeshProUGUI _name;
         [SerializeField] private TextMeshProUGUI _currentPassword;
@@ -15,9 +15,11 @@ namespace Project.UI.Menu
         [SerializeField] private TMP_InputField _passwordField;
         [SerializeField] private Button _passwordButton;
 
+        private DatabaseController _databaseController;
+
         private void OnEnable()
         {
-            _userManager = FindObjectOfType<GameManager>().UserManager;
+            _databaseController = FindObjectOfType<GameManager>().DatabaseController;
             _passwordButton.onClick.AddListener(ChangePassword);
             UpdateUI();
         }
@@ -29,7 +31,7 @@ namespace Project.UI.Menu
         }
         private void ChangePassword()
         {
-            var canChangePassword = _userManager.UpdatePassword(_passwordField.text);
+            var canChangePassword = _databaseController.UpdatePassword(_passwordField.text);
 
             if (canChangePassword)
             {
@@ -39,7 +41,7 @@ namespace Project.UI.Menu
 
         private void UpdateUI()
         {
-            var user = _userManager.CurrentUserData;
+            var user = _databaseController.CurrentUserData;
 
             _accountId.text = "Account ID: " + user.Id;
             _name.text = "Username: " + user.Username;

@@ -1,4 +1,4 @@
-namespace Project.Managing
+namespace Project.Database
 {
     public struct UserData
     {

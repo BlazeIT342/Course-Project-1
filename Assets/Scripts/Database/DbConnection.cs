@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-namespace Project.Managing
+namespace Project.Database
 {
     public class DbConnection : IDbConnection
     {

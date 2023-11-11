@@ -1,14 +1,17 @@
 using Mono.Data.Sqlite;
+using Project.UI.Menu;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace Project.Managing
+namespace Project.Database
 {
-    public class UserManager
+    public class DatabaseController
     {
+        private readonly IDbConnection _dbConnection;
+
         private UserData _userData = new();
 
         public UserData CurrentUserData
@@ -21,9 +24,7 @@ namespace Project.Managing
             }
         }
 
-        private readonly IDbConnection _dbConnection;
-
-        public UserManager(IDbConnection dbConnection)
+        public DatabaseController(IDbConnection dbConnection)
         {
             _dbConnection = dbConnection;
             InitializeDatabase();
@@ -153,16 +154,16 @@ namespace Project.Managing
         }
 
         /// <summary>
-        /// Allowed Parameters: "Id", "Username", "Password", "_role", "Record"
+        /// Allowed Parameters: "Id", "Username", "Password", "Role", "Record"
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public List<UserData> GetAllUsersSortedByParameter(ColumnType type)
+        public List<UserData> GetAllUsersSortedByParameter(string type)
         {
             var usersList = new List<UserData>();
             IDbCommand dbCommand = _dbConnection.CreateCommand();
 
-            if (type == ColumnType.Record)
+            if (type == "Record")
             {
                 dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type} DESC";
             }
@@ -282,9 +283,18 @@ namespace Project.Managing
 
         private void ShowMessage(string text)
         {
-            //var message = GameObject.Find("Message").GetComponent<MessageUI>();
-            //message.ShowMessage(text);
-            //message.gameObject.SetActive(true);
+            try
+            {
+                if (UnityEngine.Object.FindObjectOfType<MessageUI>().TryGetComponent<MessageUI>(out var message))
+                {
+                    message.ShowMessage(text);
+                    message.gameObject.SetActive(true);
+                }
+            }
+            catch (NullReferenceException)
+            {
+
+            }
         }
     }
 }

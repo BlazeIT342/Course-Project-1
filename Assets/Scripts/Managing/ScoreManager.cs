@@ -5,7 +5,6 @@ namespace Project.Managing
 {
     public class ScoreManager : MonoBehaviour
     {
-        private UserManager _userManager;
         [SerializeField] private TextMeshProUGUI _textField;
 
         private int score;
@@ -36,8 +35,7 @@ namespace Project.Managing
 
         private void TrySetRecord(bool isGameRunning)
         {
-            _userManager = FindObjectOfType<GameManager>().UserManager;
-            _userManager.TrySetNewRecord(score);
+            GameManager.Instance.DatabaseController.TrySetNewRecord(score);
         }
     }
 }

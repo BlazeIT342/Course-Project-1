@@ -1,7 +1,7 @@
 using System.Data;
 using System;
 
-namespace Project.Testing
+namespace Project.Database.Mock
 {
     public class MockDbCommand : IDbCommand
     {

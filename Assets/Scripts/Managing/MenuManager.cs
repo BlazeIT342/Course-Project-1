@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using Project.Database;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,7 +11,6 @@ namespace Project.Managing
 {
     public class MenuManager : MonoBehaviour
     {
-        private UserManager _userManager;
         [SerializeField] private TMP_InputField _usernameField;
         [SerializeField] private TMP_InputField _passwordField;
         [SerializeField] private Toggle _administratorToggle;
@@ -19,11 +19,13 @@ namespace Project.Managing
         [SerializeField] private GameObject _accountData;
         [SerializeField] private GameObject _recordTable;
 
+        private DatabaseController _databaseController;
+
         private void OnEnable()
         {
-            _userManager = FindObjectOfType<GameManager>().UserManager;
+            _databaseController = GameManager.Instance.DatabaseController;
 
-            if (!string.IsNullOrEmpty(_userManager.CurrentUserData.Username))
+            if (!string.IsNullOrEmpty(_databaseController.CurrentUserData.Username))
             {
                 OnLoadMenuToggle();
             }
@@ -31,7 +33,7 @@ namespace Project.Managing
 
         public void OnRegisterButtonClick()
         {
-            var registrationSuccess = _userManager.TryRegisterUser(_usernameField.text, _passwordField.text, _administratorToggle.isOn);
+            var registrationSuccess = _databaseController.TryRegisterUser(_usernameField.text, _passwordField.text, _administratorToggle.isOn);
 
             if (registrationSuccess)
             {
@@ -41,7 +43,7 @@ namespace Project.Managing
 
         public void OnLoginButtonClick()
         {
-            var loginSuccess = _userManager.TryLoginUser(_usernameField.text, _passwordField.text);
+            var loginSuccess = _databaseController.TryLoginUser(_usernameField.text, _passwordField.text);
 
             if (loginSuccess)
             {
@@ -69,7 +71,7 @@ namespace Project.Managing
 
         public void OnResetData()
         {
-            _userManager.ClearUserData();
+            _databaseController.ClearUserData();
         }
 
         public void OnPlayButtonClick()
@@ -81,7 +83,7 @@ namespace Project.Managing
         {
             _accountData.SetActive(!_accountData.activeSelf);
             _registrationMenu.SetActive(!_registrationMenu.activeSelf);
-            _userManager.Logout();
+            _databaseController.Logout();
         }
 
         public void Quit()

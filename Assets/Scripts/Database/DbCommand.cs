@@ -1,7 +1,7 @@
 using System.Data;
 using System;
 
-namespace Project.Managing
+namespace Project.Database
 {
     public class DbCommand : IDbCommand
     {

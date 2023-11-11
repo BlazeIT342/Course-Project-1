@@ -1,3 +1,4 @@
+using Project.Database;
 using Project.Managing;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,10 @@ namespace Project.UI.Menu
 {
     public class RecordMenuUI : MonoBehaviour
     {
-        private UserManager _userManager;
         [SerializeField] private RecordRowItemUI _recordRowItemUI;
         [SerializeField] private Transform _contentRoot;
+
+        private DatabaseController _databaseController;
 
         private List<UserData> _users = new();
         private List<UserData> Users
@@ -26,7 +28,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
-            _userManager = FindObjectOfType<GameManager>().UserManager;
+            _databaseController = GameManager.Instance.DatabaseController;
             SortByRecord();
         }
 
@@ -46,17 +48,17 @@ namespace Project.UI.Menu
 
         public void SortByRecord()
         {
-            Users = _userManager.GetAllUsersSortedByParameter(ColumnType.Record);
+            Users = _databaseController.GetAllUsersSortedByParameter("Record");
         }
 
         public void SortByID()
         {
-            Users = _userManager.GetAllUsersSortedByParameter(ColumnType.Id);
+            Users = _databaseController.GetAllUsersSortedByParameter("Id");
         }
 
         public void SortByUsername()
         {
-            Users = _userManager.GetAllUsersSortedByParameter(ColumnType.Username);
+            Users = _databaseController.GetAllUsersSortedByParameter("Username");
         }
     }
 }

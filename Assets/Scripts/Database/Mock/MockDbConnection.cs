@@ -2,7 +2,7 @@ using Mono.Data.Sqlite;
 using System;
 using System.Data;
 
-namespace Project.Testing
+namespace Project.Database.Mock
 {
     public class MockDbConnection : IDbConnection
     {
