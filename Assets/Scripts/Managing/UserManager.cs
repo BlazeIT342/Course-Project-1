@@ -24,6 +24,11 @@ namespace Project.Managing
 
         private IDbConnection _dbConnection;
 
+        public UserManager(IDbConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
+
         private void OnEnable()
         {
             _dbConnection = CreateAndOpenDatabase();
