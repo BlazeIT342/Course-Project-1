@@ -39,73 +39,94 @@ namespace Project.Managing
 
         public bool TryRegisterUser(string username, string password, bool isAdministrator)
         {
-            if (!IsUsernameValid(username))
+            try
             {
-                ShowMessage("Invalid username. It should consist of 5-20 alphanumeric characters.");
-                return false;
-            }
+                ValidateUsername(username);
+                ValidatePassword(password);
 
-            if (!IsPasswordValid(password))
+                IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
+                dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username";
+                dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
+
+                int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
+
+                if (count > 0)
+                {
+                    throw new InvalidOperationException("User already exists!");
+                }
+
+                IDbCommand dbCommandInsertUser = _dbConnection.CreateCommand();
+                dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, role) VALUES (@username, @password, @role)";
+                dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", username));
+                dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", password));
+                dbCommandInsertUser.Parameters.Add(new SqliteParameter("@role", isAdministrator ? "Administrator" : "User"));
+                dbCommandInsertUser.ExecuteNonQuery();
+
+                CurrentUserData = GetUserDataByUsername(username);
+
+                return true;
+            }
+            catch (ArgumentException e)
             {
-                ShowMessage("Invalid password. It should be 4-20 characters long.");
-                return false;
+                ShowMessage(e.Message);
             }
-
-            IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
-            dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username";
-            dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
-
-            int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
-
-            if (count > 0)
+            catch (InvalidOperationException e)
             {
-                ShowMessage("User already exists!");
-                return false;
+                ShowMessage(e.Message);
             }
-
-            IDbCommand dbCommandInsertUser = _dbConnection.CreateCommand();
-            dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, role) VALUES (@username, @password, @role)";
-            dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", username));
-            dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", password));
-            dbCommandInsertUser.Parameters.Add(new SqliteParameter("@role", isAdministrator ? "Administrator" : "User"));
-            dbCommandInsertUser.ExecuteNonQuery();
-
-            CurrentUserData = GetUserDataByUsername(username);
-
-            return true;
+            catch (SqliteException e)
+            {
+                ShowMessage("Error registering user in database: " + e.Message);
+            }
+            catch (Exception e)
+            {
+                ShowMessage("An unexpected error occurred: " + e.Message);
+            }
+            
+            return false;
         }
 
         public bool TryLoginUser(string username, string password)
         {
-            if (!IsUsernameValid(username))
+            try
             {
-                ShowMessage("Invalid Username. It should consist of 5-20 alphanumeric characters.");
-                return false;
-            }
+                ValidateUsername(username);
+                ValidatePassword(password);
 
-            if (!IsPasswordValid(password))
-            {
-                ShowMessage("Invalid Password. It should be 4-20 characters long.");
-                return false;
-            }
+                IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
+                dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username AND password=@password";
+                dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
+                dbCommandCheckUser.Parameters.Add(new SqliteParameter("@password", password));
 
-            IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
-            dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username AND password=@password";
-            dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
-            dbCommandCheckUser.Parameters.Add(new SqliteParameter("@password", password));
+                int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
 
-            int count = Convert.ToInt32(dbCommandCheckUser.ExecuteScalar());
+                if (count <= 0)
+                {
+                    throw new InvalidOperationException("Invalid Username or Password.");
+                }
 
-            if (count > 0)
-            {
                 CurrentUserData = GetUserDataByUsername(username);
                 return true;
             }
-            else
+
+            catch (ArgumentException e)
             {
-                ShowMessage("Invalid Username or Password.");
-                return false;
+                ShowMessage(e.Message);
             }
+            catch (InvalidOperationException e)
+            {
+                ShowMessage(e.Message);
+            }
+            catch (SqliteException e)
+            {
+                ShowMessage("Error registering user in database: " + e.Message);
+            }
+            catch (Exception e)
+            {
+                ShowMessage("An unexpected error occurred: " + e.Message);
+            } 
+
+            return false;
         }
 
         public UserData GetUserDataByUsername(string username)
@@ -180,22 +201,31 @@ namespace Project.Managing
 
         public bool UpdatePassword(string newPassword)
         {
-            if (!IsPasswordValid(newPassword))
+            try
             {
-                ShowMessage("Invalid password. It should be 4-20 characters long.");
-                return false;
+                ValidatePassword(newPassword);
+
+                IDbCommand dbCommand = _dbConnection.CreateCommand();
+                dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE id=@UserId";
+                dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
+                dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
+
+                dbCommand.ExecuteNonQuery();
+
+                _userData.Password = newPassword;
+                ShowMessage("Successful password change! Your new password: " + newPassword);
+                return true;
+            }
+            catch (ArgumentException e)
+            {
+                ShowMessage(e.Message);
+            }
+            catch (SqliteException e)
+            {
+                ShowMessage(e.Message);              
             }
 
-            IDbCommand dbCommand = _dbConnection.CreateCommand();
-            dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE id=@UserId";
-            dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
-            dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
-
-            dbCommand.ExecuteNonQuery();
-
-            _userData.Password = newPassword;
-            ShowMessage("Successful password change! Your new password: " + newPassword);
-            return true;
+            return false;
         }
 
         public void Logout()
@@ -246,16 +276,24 @@ namespace Project.Managing
             return dbConnection;
         }
 
-        private bool IsUsernameValid(string username)
+        private void ValidateUsername(string username)
         {
             string pattern = "^[\\S]{5,20}$";
-            return Regex.IsMatch(username, pattern);
+
+            if (!Regex.IsMatch(username, pattern))
+            {
+                throw new ArgumentException("Invalid username. It should consist of 5-20 alphanumeric characters and contain no white spaces.");
+            }
         }
 
-        private bool IsPasswordValid(string password)
+        private void ValidatePassword(string password)
         {
             string pattern = "^[\\S]{4,20}$";
-            return Regex.IsMatch(password, pattern);
+
+            if (!Regex.IsMatch(password, pattern))
+            {
+                throw new ArgumentException("Invalid password. It should be 4-20 characters long and contain no white spaces.");
+            }
         }
 
         private void ShowMessage(string text)
