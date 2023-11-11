@@ -1,5 +1,4 @@
 using Mono.Data.Sqlite;
-using Project.UI.Menu;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +7,7 @@ using UnityEngine;
 
 namespace Project.Managing
 {
-    public class UserManager : MonoBehaviour
+    public class UserManager
     {
         private UserData _userData = new();
 
@@ -22,24 +21,13 @@ namespace Project.Managing
             }
         }
 
-        private IDbConnection _dbConnection;
+        private readonly IDbConnection _dbConnection;
 
         public UserManager(IDbConnection dbConnection)
         {
             _dbConnection = dbConnection;
-        }
-
-        private void OnEnable()
-        {
-            _dbConnection = CreateAndOpenDatabase();
             InitializeDatabase();
-
             CurrentUserData = GetUserDataByUsername(PlayerPrefs.GetString("username"));
-        }
-
-        private void OnDestroy()
-        {
-            _dbConnection.Close();
         }
 
         public bool TryRegisterUser(string username, string password, bool isAdministrator)
@@ -272,15 +260,6 @@ namespace Project.Managing
             dbCommandCreateTable.ExecuteNonQuery();
         }
 
-        private IDbConnection CreateAndOpenDatabase()
-        {
-            string dbUri = "URI=file:ApplicationDatabase.sqlite";
-            IDbConnection dbConnection = new SqliteConnection(dbUri);
-            dbConnection.Open();
-
-            return dbConnection;
-        }
-
         private void ValidateUsername(string username)
         {
             string pattern = "^[\\S]{5,20}$";
@@ -303,9 +282,9 @@ namespace Project.Managing
 
         private void ShowMessage(string text)
         {
-            var message = GameObject.Find("Message").GetComponent<MessageUI>();
-            message.ShowMessage(text);
-            message.gameObject.SetActive(true);
+            //var message = GameObject.Find("Message").GetComponent<MessageUI>();
+            //message.ShowMessage(text);
+            //message.gameObject.SetActive(true);
         }
     }
 }

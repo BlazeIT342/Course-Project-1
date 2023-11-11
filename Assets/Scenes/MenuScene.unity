@@ -763,7 +763,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &252636578
 PrefabInstance:
@@ -2271,6 +2271,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454185216}
   m_CullTransparentMesh: 1
+--- !u!1 &522309925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 522309927}
+  - component: {fileID: 522309926}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &522309926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522309925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7467a4c110b77e4d85a638db869d252, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &522309927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522309925}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &538585163
 GameObject:
   m_ObjectHideFlags: 0
@@ -4259,9 +4303,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2017704779}
-        m_TargetAssemblyTypeName: UserManager, Assembly-CSharp
-        m_MethodName: ClearUserData
+      - m_Target: {fileID: 2017704780}
+        m_TargetAssemblyTypeName: Project.Managing.MenuManager, GameAssembly
+        m_MethodName: OnResetData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6393,7 +6437,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f77ed13c03e934a8144f3ee9a0377d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userManager: {fileID: 2017704779}
   _accountId: {fileID: 587353015}
   _name: {fileID: 750732504}
   _currentPassword: {fileID: 264568786}
@@ -7141,7 +7184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974c4e75457de0940b7931f126a70081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userManager: {fileID: 2017704779}
   _recordRowItemUI: {fileID: 4104660310986955435, guid: 59e417e303738c845b2a4f312d71ec0f,
     type: 3}
   _contentRoot: {fileID: 1125866567}
@@ -7245,7 +7287,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2017704778}
-  - component: {fileID: 2017704779}
   - component: {fileID: 2017704780}
   m_Layer: 0
   m_Name: MenuManager
@@ -7267,20 +7308,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2017704779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017704776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab78ded698bc7ce4195cd16885558ac4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2017704780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7293,7 +7322,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f880f32b4dc405741b118b80bdb4abfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userManager: {fileID: 2017704779}
   _usernameField: {fileID: 1434259081}
   _passwordField: {fileID: 837454033}
   _administratorToggle: {fileID: 1885121630}
@@ -7806,7 +7834,7 @@ RectTransform:
   - {fileID: 1983726331}
   - {fileID: 70020905}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7895,7 +7923,7 @@ PrefabInstance:
         type: 3}
       propertyPath: userManager
       value: 
-      objectReference: {fileID: 2017704779}
+      objectReference: {fileID: 0}
     - target: {fileID: 5453458568962752415, guid: 814f59af25be51842b7a72d2852c50b7,
         type: 3}
       propertyPath: _activate

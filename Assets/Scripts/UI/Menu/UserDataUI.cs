@@ -7,7 +7,7 @@ namespace Project.UI.Menu
 {
     public class UserDataUI : MonoBehaviour
     {
-        [SerializeField] private UserManager _userManager;
+        private UserManager _userManager;
         [SerializeField] private TextMeshProUGUI _accountId;
         [SerializeField] private TextMeshProUGUI _name;
         [SerializeField] private TextMeshProUGUI _currentPassword;
@@ -17,6 +17,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
+            _userManager = FindObjectOfType<GameManager>().UserManager;
             _passwordButton.onClick.AddListener(ChangePassword);
             UpdateUI();
         }

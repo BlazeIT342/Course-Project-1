@@ -10,7 +10,7 @@ namespace Project.Managing
 {
     public class MenuManager : MonoBehaviour
     {
-        [SerializeField] private UserManager _userManager;
+        private UserManager _userManager;
         [SerializeField] private TMP_InputField _usernameField;
         [SerializeField] private TMP_InputField _passwordField;
         [SerializeField] private Toggle _administratorToggle;
@@ -21,6 +21,8 @@ namespace Project.Managing
 
         private void OnEnable()
         {
+            _userManager = FindObjectOfType<GameManager>().UserManager;
+
             if (!string.IsNullOrEmpty(_userManager.CurrentUserData.Username))
             {
                 OnLoadMenuToggle();
@@ -63,6 +65,11 @@ namespace Project.Managing
         {
             _mainMenu.SetActive(!_mainMenu.activeSelf);
             _recordTable.SetActive(!_recordTable.activeSelf);
+        }
+
+        public void OnResetData()
+        {
+            _userManager.ClearUserData();
         }
 
         public void OnPlayButtonClick()

@@ -6,7 +6,7 @@ namespace Project.UI.Menu
 {
     public class RecordMenuUI : MonoBehaviour
     {
-        [SerializeField] private UserManager _userManager;
+        private UserManager _userManager;
         [SerializeField] private RecordRowItemUI _recordRowItemUI;
         [SerializeField] private Transform _contentRoot;
 
@@ -26,6 +26,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
+            _userManager = FindObjectOfType<GameManager>().UserManager;
             SortByRecord();
         }
 

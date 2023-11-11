@@ -1,16 +1,16 @@
 using System;
 using System.Data;
 
-namespace Project.Testing
+namespace Project.Managing
 {
-    public class MockDbConnection : IDbConnection
+    public class DbConnection : IDbConnection
     {
         public string ConnectionString { get; set; }
 
         // Имитация базового метода CreateCommand
         public IDbCommand CreateCommand()
         {
-            return new MockDbCommand();
+            return new DbCommand();
         }
 
         // Имитация базового метода Open

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Data;
 using NUnit.Framework;
 using Project.Managing;
 using UnityEngine.TestTools;
@@ -12,8 +11,9 @@ namespace Project.Testing
         public IEnumerator TryRegisterUser_UserDoesNotExist_ReturnsTrue()
         {
             // Arrange
-            IDbConnection mockDbConnection = new MockDbConnection();
-            var userManager = new UserManager(mockDbConnection);
+            MockDbConnection mockDbConnection = new();
+
+            var userManager = new UserManager(mockDbConnection.CreateAndOpenDatabase());
 
             // Act
             bool result = userManager.TryRegisterUser("NewUser", "Password123", false);
@@ -29,8 +29,9 @@ namespace Project.Testing
         public IEnumerator TryRegisterUser_UserAlreadyExists_ReturnsFalse()
         {
             // Arrange
-            IDbConnection mockDbConnection = new MockDbConnection();
-            var userManager = new UserManager(mockDbConnection);
+            MockDbConnection mockDbConnection = new();
+
+            var userManager = new UserManager(mockDbConnection.CreateAndOpenDatabase());
 
             // Register a user first
             userManager.TryRegisterUser("ExistingUser", "Password123", false);
