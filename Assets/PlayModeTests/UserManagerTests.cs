@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using NUnit.Framework;
 using Project.Database;
@@ -17,7 +18,7 @@ namespace Project.Testing
             var userManager = new DatabaseController(mockDbConnection.CreateAndOpenDatabase());
 
             // Act
-            bool result = userManager.TryRegisterUser("NewUser", "Password123", false);
+            var result = userManager.TryRegisterUser("NewUser", "Password123", false);
 
             // Assert
             Assert.IsTrue(result);
@@ -38,7 +39,7 @@ namespace Project.Testing
             userManager.TryRegisterUser("ExistingUser", "Password123", false);
 
             // Act
-            bool result = userManager.TryRegisterUser("ExistingUser", "Password456", false);
+            var result = userManager.TryRegisterUser("ExistingUser", "Password456", false);
 
             // Assert
             Assert.IsFalse(result);
@@ -48,3 +49,4 @@ namespace Project.Testing
         }
     }
 }
+#endif

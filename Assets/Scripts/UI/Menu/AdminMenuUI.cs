@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Project.UI.Menu
 {
-    public class RecordMenuUI : MonoBehaviour
+    public class AdminMenuUI : MonoBehaviour
     {
-        [SerializeField] private RecordRowItemUI _recordRowItemUI;
+        [SerializeField] private AdminRowItemUI _adminRowItemUI;
         [SerializeField] private Transform _contentRoot;
 
         private DatabaseController _databaseController;
@@ -16,7 +16,7 @@ namespace Project.UI.Menu
         private List<UserData> Users
         {
             get => _users;
-
+            
             set
             {
                 if (_users != value)
@@ -29,7 +29,8 @@ namespace Project.UI.Menu
 
         private bool _idSortDesc;
         private bool _usernameSortDesc;
-        private bool _recordSortDesc;
+        private bool _passwordSortDesc;
+        private bool _roleSortDesc;
 
         private void OnEnable()
         {
@@ -37,9 +38,10 @@ namespace Project.UI.Menu
 
             _idSortDesc = false;
             _usernameSortDesc = false;
-            _recordSortDesc = true;
+            _passwordSortDesc = false;
+            _roleSortDesc = false;
 
-            SortByRecord();
+            SortByID();
         }
 
         private void BuildRecordTable()
@@ -51,16 +53,12 @@ namespace Project.UI.Menu
 
             foreach (var user in Users)
             {
-                RecordRowItemUI uiInstance = Instantiate(_recordRowItemUI, _contentRoot);
-                uiInstance.Initialize(user.Id, user.Username, user.Record);
+                if (user.Id == _databaseController.CurrentUserData.Id)
+                    continue;
+
+                AdminRowItemUI uiInstance = Instantiate(_adminRowItemUI, _contentRoot);
+                uiInstance.Initialize(user.Id, user.Username, user.Password, user.Role);
             }
-        }
-
-        public void SortByRecord()
-        {
-            Users = _databaseController.GetAllUsersSortedByParameter("Record", _recordSortDesc);
-
-            _recordSortDesc = !_recordSortDesc;
         }
 
         public void SortByID()
@@ -75,6 +73,20 @@ namespace Project.UI.Menu
             Users = _databaseController.GetAllUsersSortedByParameter("Username", _usernameSortDesc);
 
             _usernameSortDesc = !_usernameSortDesc;
+        }
+
+        public void SortByPassword()
+        {
+            Users = _databaseController.GetAllUsersSortedByParameter("Password", _passwordSortDesc);
+
+            _passwordSortDesc = !_passwordSortDesc;
+        }
+
+        public void SortByRole()
+        {
+            Users = _databaseController.GetAllUsersSortedByParameter("Role", _roleSortDesc);
+
+            _roleSortDesc = !_roleSortDesc;
         }
     }
 }

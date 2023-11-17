@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#if UNITY_EDITOR
 using UnityEngine;
-
 using UnityEditor;
 
 [CustomEditor(typeof(VariableJoystick))]
@@ -35,3 +33,4 @@ public class VariableJoystickEditor : JoystickEditor
         EditorGUILayout.PropertyField(joystickType, new GUIContent("Joystick Type", "The type of joystick the variable joystick is current using."));
     }
 }
+#endif

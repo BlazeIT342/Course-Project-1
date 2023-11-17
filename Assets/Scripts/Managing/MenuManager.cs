@@ -18,6 +18,8 @@ namespace Project.Managing
         [SerializeField] private GameObject _mainMenu;
         [SerializeField] private GameObject _accountData;
         [SerializeField] private GameObject _recordTable;
+        [SerializeField] private GameObject _adminMenu;
+        [SerializeField] private Button _adminButton;
 
         private DatabaseController _databaseController;
 
@@ -54,19 +56,27 @@ namespace Project.Managing
         public void OnLoadMenuToggle()
         {
             _registrationMenu.SetActive(!_registrationMenu.activeSelf);
-            _mainMenu.SetActive(!_mainMenu.activeSelf);
+            ToggleMainMenu();
+
+            _adminButton.gameObject.SetActive(_databaseController.CurrentUserData.Role == "Administrator");
         }
 
         public void OnPersonalPageToggle()
         {
-            _mainMenu.SetActive(!_mainMenu.activeSelf);
+            ToggleMainMenu();
             _accountData.SetActive(!_accountData.activeSelf);
         }
 
-        public void OnRecordPageToggle()
+        public void OnRecordMenuToggle()
         {
-            _mainMenu.SetActive(!_mainMenu.activeSelf);
+            ToggleMainMenu();
             _recordTable.SetActive(!_recordTable.activeSelf);
+        }
+
+        public void OnAdminMenuToggle()
+        {
+            ToggleMainMenu();
+            _adminMenu.SetActive(!_adminMenu.activeSelf);
         }
 
         public void OnResetData()
@@ -93,6 +103,11 @@ namespace Project.Managing
 #else
         Application.Quit();
 #endif
+        }
+
+        private void ToggleMainMenu()
+        {
+            _mainMenu.SetActive(!_mainMenu.activeSelf);
         }
     }
 }

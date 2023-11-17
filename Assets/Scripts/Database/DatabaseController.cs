@@ -38,7 +38,7 @@ namespace Project.Database
                 ValidateUsername(username);
                 ValidatePassword(password);
 
-                IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
+                var dbCommandCheckUser = _dbConnection.CreateCommand();
                 dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username";
                 dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
 
@@ -49,7 +49,7 @@ namespace Project.Database
                     throw new InvalidOperationException("User already exists!");
                 }
 
-                IDbCommand dbCommandInsertUser = _dbConnection.CreateCommand();
+                var dbCommandInsertUser = _dbConnection.CreateCommand();
                 dbCommandInsertUser.CommandText = "INSERT INTO Users (username, password, role) VALUES (@username, @password, @role)";
                 dbCommandInsertUser.Parameters.Add(new SqliteParameter("@username", username));
                 dbCommandInsertUser.Parameters.Add(new SqliteParameter("@password", password));
@@ -87,7 +87,7 @@ namespace Project.Database
                 ValidateUsername(username);
                 ValidatePassword(password);
 
-                IDbCommand dbCommandCheckUser = _dbConnection.CreateCommand();
+                var dbCommandCheckUser = _dbConnection.CreateCommand();
                 dbCommandCheckUser.CommandText = "SELECT COUNT(*) FROM Users WHERE username=@username AND password=@password";
                 dbCommandCheckUser.Parameters.Add(new SqliteParameter("@username", username));
                 dbCommandCheckUser.Parameters.Add(new SqliteParameter("@password", password));
@@ -127,11 +127,11 @@ namespace Project.Database
         {
             if (username != null)
             {
-                IDbCommand dbCommand = _dbConnection.CreateCommand();
+                var dbCommand = _dbConnection.CreateCommand();
                 dbCommand.CommandText = "SELECT * FROM Users WHERE username=@Username";
                 dbCommand.Parameters.Add(new SqliteParameter("@Username", username));
 
-                IDataReader reader = dbCommand.ExecuteReader();
+                var reader = dbCommand.ExecuteReader();
 
                 if (reader.Read())
                 {
@@ -158,12 +158,12 @@ namespace Project.Database
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public List<UserData> GetAllUsersSortedByParameter(string type)
+        public List<UserData> GetAllUsersSortedByParameter(string type, bool desc)
         {
             var usersList = new List<UserData>();
-            IDbCommand dbCommand = _dbConnection.CreateCommand();
+            var dbCommand = _dbConnection.CreateCommand();
 
-            if (type == "Record")
+            if (desc)
             {
                 dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type} DESC";
             }
@@ -172,7 +172,7 @@ namespace Project.Database
                 dbCommand.CommandText = $"SELECT * FROM Users ORDER BY {type}";
             }
 
-            IDataReader reader = dbCommand.ExecuteReader();
+            var reader = dbCommand.ExecuteReader();
 
             while (reader.Read())
             {
@@ -199,7 +199,7 @@ namespace Project.Database
             {
                 ValidatePassword(newPassword);
 
-                IDbCommand dbCommand = _dbConnection.CreateCommand();
+                var dbCommand = _dbConnection.CreateCommand();
                 dbCommand.CommandText = "UPDATE Users SET password=@NewPassword WHERE id=@UserId";
                 dbCommand.Parameters.Add(new SqliteParameter("@NewPassword", newPassword));
                 dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
@@ -233,7 +233,7 @@ namespace Project.Database
             {
                 _userData.Record = score;
 
-                IDbCommand dbCommand = _dbConnection.CreateCommand();
+                var dbCommand = _dbConnection.CreateCommand();
                 dbCommand.CommandText = "UPDATE Users SET record=@NewRecord WHERE id=@UserId";
                 dbCommand.Parameters.Add(new SqliteParameter("@NewRecord", _userData.Record));
                 dbCommand.Parameters.Add(new SqliteParameter("@UserId", CurrentUserData.Id));
@@ -244,9 +244,21 @@ namespace Project.Database
             }
         }
 
+        public void DeleteUserByUsername(string username)
+        {
+            if (username != null)
+            {
+                var dbCommand = _dbConnection.CreateCommand();
+                dbCommand.CommandText = "DELETE FROM Users WHERE username=@Username";
+                dbCommand.Parameters.Add(new SqliteParameter("@Username", username));
+
+                dbCommand.ExecuteNonQuery();
+            }
+        }
+
         public void ClearUserData()
         {
-            IDbCommand dbCommandClearData = _dbConnection.CreateCommand();
+            var dbCommandClearData = _dbConnection.CreateCommand();
             dbCommandClearData.CommandText = "DELETE FROM Users";
             dbCommandClearData.ExecuteNonQuery();
             ShowMessage("All user data cleared.");
@@ -256,7 +268,7 @@ namespace Project.Database
 
         private void InitializeDatabase()
         {
-            IDbCommand dbCommandCreateTable = _dbConnection.CreateCommand();
+            var dbCommandCreateTable = _dbConnection.CreateCommand();
             dbCommandCreateTable.CommandText = "CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, role TEXT DEFAULT User, record INTEGER DEFAULT 0)";
             dbCommandCreateTable.ExecuteNonQuery();
         }
