@@ -17,19 +17,16 @@ namespace Project.Database.Mock
             return dbConnection;
         }
 
-        // Имитация базового метода CreateCommand
         public IDbCommand CreateCommand()
         {
             return new MockDbCommand();
         }
 
-        // Имитация базового метода Open
         public void Open()
         {
             State = ConnectionState.Open;
         }
 
-        // Имитация базового метода Close
         public void Close()
         {
             State = ConnectionState.Closed;

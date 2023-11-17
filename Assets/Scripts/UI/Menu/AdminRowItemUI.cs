@@ -22,7 +22,7 @@ namespace Project.UI.Menu
 
             _deleteButton.onClick.AddListener(() =>
             {
-                GameManager.Instance.DatabaseController.DeleteUserByUsername(nickname);
+                DatabaseManager.Instance.DatabaseController.DeleteUserByUsername(nickname);
                 Destroy(gameObject);
             });
         }

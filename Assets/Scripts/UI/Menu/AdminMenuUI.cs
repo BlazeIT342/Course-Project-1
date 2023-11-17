@@ -34,7 +34,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
-            _databaseController = GameManager.Instance.DatabaseController;
+            _databaseController = DatabaseManager.Instance.DatabaseController;
 
             _idSortDesc = false;
             _usernameSortDesc = false;

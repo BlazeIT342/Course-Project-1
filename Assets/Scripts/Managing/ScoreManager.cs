@@ -35,7 +35,7 @@ namespace Project.Managing
 
         private void TrySetRecord(bool isGameRunning)
         {
-            GameManager.Instance.DatabaseController.TrySetNewRecord(score);
+            DatabaseManager.Instance.DatabaseController.TrySetNewRecord(score);
         }
     }
 }

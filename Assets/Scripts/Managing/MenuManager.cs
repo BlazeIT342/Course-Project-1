@@ -18,6 +18,7 @@ namespace Project.Managing
         [SerializeField] private GameObject _mainMenu;
         [SerializeField] private GameObject _accountData;
         [SerializeField] private GameObject _recordTable;
+        [SerializeField] private GameObject _aboutMenu;
         [SerializeField] private GameObject _adminMenu;
         [SerializeField] private Button _adminButton;
 
@@ -25,7 +26,7 @@ namespace Project.Managing
 
         private void OnEnable()
         {
-            _databaseController = GameManager.Instance.DatabaseController;
+            _databaseController = DatabaseManager.Instance.DatabaseController;
 
             if (!string.IsNullOrEmpty(_databaseController.CurrentUserData.Username))
             {
@@ -73,6 +74,12 @@ namespace Project.Managing
             _recordTable.SetActive(!_recordTable.activeSelf);
         }
 
+        public void OnAboutMenuToggle()
+        {
+            ToggleMainMenu();
+            _aboutMenu.SetActive(!_aboutMenu.activeSelf);
+        }
+
         public void OnAdminMenuToggle()
         {
             ToggleMainMenu();
@@ -93,7 +100,7 @@ namespace Project.Managing
         {
             _accountData.SetActive(!_accountData.activeSelf);
             _registrationMenu.SetActive(!_registrationMenu.activeSelf);
-            _databaseController.Logout();
+            _databaseController.ClearCurrentUserData();
         }
 
         public void Quit()

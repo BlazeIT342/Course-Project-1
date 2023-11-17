@@ -19,7 +19,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
-            _databaseController = FindObjectOfType<GameManager>().DatabaseController;
+            _databaseController = FindObjectOfType<DatabaseManager>().DatabaseController;
             _passwordButton.onClick.AddListener(ChangePassword);
             UpdateUI();
         }

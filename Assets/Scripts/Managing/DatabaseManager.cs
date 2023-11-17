@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Project.Managing
 {
-    public class GameManager : MonoBehaviour
+    public class DatabaseManager : MonoBehaviour
     {
-        public static GameManager Instance;
+        public static DatabaseManager Instance;
 
         public DatabaseController DatabaseController { get; private set; }
 
