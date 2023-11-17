@@ -3,7 +3,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Project.UI.Game
-{
+{    /// <summary>
+     /// Handles the display and functionality of the in-game menu UI, such as starting and ending the game,
+     /// reloading the scene, and returning to the main menu.
+     /// </summary>
     public class GameMenuUI : MonoBehaviour
     {
         [SerializeField] private GameObject _startMenu;

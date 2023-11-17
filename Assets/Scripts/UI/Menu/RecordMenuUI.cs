@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.UI.Menu
-{
+{    /// <summary>
+     /// Represents the UI for displaying and sorting user records, including sorting by ID, username, and highest score.
+     /// </summary>
     public class RecordMenuUI : MonoBehaviour
     {
         [SerializeField] private RecordRowItemUI _recordRowItemUI;

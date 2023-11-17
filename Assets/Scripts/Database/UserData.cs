@@ -1,5 +1,7 @@
 namespace Project.Database
-{
+{    /// <summary>
+     /// Represents a structure containing user data, including ID, username, password, role, and highest score.
+     /// </summary>
     public struct UserData
     {
         public int Id { get; set; }

@@ -5,14 +5,17 @@ using UnityEngine;
 
 namespace Project.Game
 {
+    /// <summary>
+    /// Controls the respawn and generation of ground elements, responding to collision events and ensuring a cooldown period.
+    /// </summary>
     public class GroundMover : MonoBehaviour
     {
-        private const int DistanceToNextGround = 30;
+        private const int DistanceToNextGround = 30; // Distance to spawn the next ground element.
 
-        [SerializeField] private List<GameObject> _groundPrefabs = new();
-        [SerializeField] private List<GameObject> _grounds = new();
+        [SerializeField] private List<GameObject> _groundPrefabs = new(); // List of ground prefabs to be spawned.
+        [SerializeField] private List<GameObject> _grounds = new();      // List of instantiated ground elements.
 
-        private bool _isReadyToRespawn = true;
+        private bool _isReadyToRespawn = true; // Indicates whether it's ready to respawn a new ground element.
 
         private void OnEnable()
         {
@@ -24,6 +27,10 @@ namespace Project.Game
             GameEventManager.Instance.OnCollisionWall.RemoveListener(OnCollisionWall);
         }
 
+        /// <summary>
+        /// Initiates the respawn of a ground element, subject to cooldown and game state conditions.
+        /// </summary>
+        /// <param name="isGameRunning">Indicates whether the game is currently running.</param>
         public void RespawnGround(bool isGameRunning)
         {
             if (!isGameRunning || !_isReadyToRespawn) return;
@@ -35,11 +42,19 @@ namespace Project.Game
             _grounds.Add(newGround);
         }
 
+        /// <summary>
+        /// Handles the respawn of a ground element upon colliding with a wall during gameplay.
+        /// </summary>
+        /// <param name="isGameRunning">Indicates whether the game is currently running.</param>
         private void OnCollisionWall(bool isGameRunning)
         {
             RespawnGround(isGameRunning);
         }
 
+        /// <summary>
+        /// Implements a cooldown period for ground respawns to prevent rapid generation.
+        /// </summary>
+        /// <returns>Coroutine enumerator.</returns>
         private IEnumerator RespawnCooldown()
         {
             _isReadyToRespawn = false;

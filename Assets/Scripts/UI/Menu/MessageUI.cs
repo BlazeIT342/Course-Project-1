@@ -2,7 +2,9 @@ using TMPro;
 using UnityEngine;
 
 namespace Project.UI.Menu
-{
+{   /// <summary>
+    /// Represents a user interface element for displaying messages to the player.
+    /// </summary>
     public class MessageUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _textMessage;

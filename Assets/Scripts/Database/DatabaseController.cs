@@ -373,6 +373,11 @@ namespace Project.Database
             CurrentUserData = new();
         }
 
+        /// <summary>
+        /// Validates the provided username against a pattern.
+        /// </summary>
+        /// <param name="username">The username to be validated.</param>
+        /// <exception cref="ArgumentException">Thrown if the username is invalid. It should consist of 5-20 alphanumeric characters and contain no white spaces.</exception>
         private void ValidateUsername(string username)
         {
             string pattern = "^[\\S]{5,20}$";
@@ -383,6 +388,11 @@ namespace Project.Database
             }
         }
 
+        /// <summary>
+        /// Validates the provided password against a pattern.
+        /// </summary>
+        /// <param name="password">The password to be validated.</param>
+        /// <exception cref="ArgumentException">Thrown if the password is invalid. It should be 4-20 characters long and contain no white spaces.</exception>
         private void ValidatePassword(string password)
         {
             string pattern = "^[\\S]{4,20}$";
@@ -393,6 +403,10 @@ namespace Project.Database
             }
         }
 
+        /// <summary>
+        /// Shows a message using the MessageUI component if available.
+        /// </summary>
+        /// <param name="text">The text of the message to be shown.</param>
         private void ShowMessage(string text)
         {
             try

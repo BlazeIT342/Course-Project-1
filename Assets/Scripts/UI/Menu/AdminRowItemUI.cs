@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Project.UI.Menu
-{
+{    /// <summary>
+     /// Represents a UI item for displaying and interacting with user information in the admin menu.
+     /// </summary>
     public class AdminRowItemUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _id;

@@ -5,7 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Project.UI.Menu
-{
+{    /// <summary>
+     /// Represents the UI for displaying and interacting with user data, including the ability to change passwords.
+     /// </summary>
     public class UserDataUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _accountId;
@@ -29,6 +31,7 @@ namespace Project.UI.Menu
             _passwordButton.onClick.RemoveListener(ChangePassword);
             UpdateUI();
         }
+
         private void ChangePassword()
         {
             var canChangePassword = _databaseController.UpdatePassword(_passwordField.text);

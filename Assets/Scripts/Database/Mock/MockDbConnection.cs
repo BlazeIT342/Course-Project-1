@@ -3,7 +3,10 @@ using System;
 using System.Data;
 
 namespace Project.Database.Mock
-{
+{    /// <summary>
+     /// A mock database connection implementation that allows setting and retrieving properties,
+     /// creating and opening a mock database, creating commands, and managing the connection state.
+     /// </summary>
     public class MockDbConnection : IDbConnection
     {
         public string ConnectionString { get; set; }

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Project.UI.Menu
-{
+{   /// <summary>
+    /// Manages the administrative menu UI, allowing administrators to view and sort user data.
+    /// </summary>
     public class AdminMenuUI : MonoBehaviour
     {
         [SerializeField] private AdminRowItemUI _adminRowItemUI;

@@ -2,7 +2,10 @@ using System.Data;
 using System;
 
 namespace Project.Database.Mock
-{
+{    /// <summary>
+     /// A mock database command implementation that allows setting and retrieving properties,
+     /// simulating the execution of commands, and handling parameters and transactions.
+     /// </summary>
     public class MockDbCommand : IDbCommand
     {
         public string CommandText { get; set; }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Project.Managing
 {
+    /// <summary>
+    /// Manages the scoring system in the game, updating the score based on game events and attempting to set a new record.
+    /// </summary>
     public class ScoreManager : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _textField;

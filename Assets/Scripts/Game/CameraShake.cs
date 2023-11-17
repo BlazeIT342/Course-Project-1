@@ -4,14 +4,17 @@ using UnityEngine;
 
 namespace Project.Game
 {
+    /// <summary>
+    /// Controls camera shake effects triggered by specific game events, such as adding a new cube or colliding with a wall.
+    /// </summary>
     public class CameraShake : MonoBehaviour
     {
-        private const float ShakeAmplitude = 2f;
-        private const float ShakeFrequency = 3.0f;
-        private const float Duration = 0.2f;
+        private const float ShakeAmplitude = 2f;     // The amplitude of the camera shake.
+        private const float ShakeFrequency = 3.0f;   // The frequency of the camera shake.
+        private const float Duration = 0.2f;          // The duration of the camera shake.
 
-        private float _shakeElapsedTime = 0f;
-        private CinemachineVirtualCamera _virtualCamera;
+        private float _shakeElapsedTime = 0f;        // The elapsed time for the camera shake effect.
+        private CinemachineVirtualCamera _virtualCamera; // Reference to the Cinemachine virtual camera.
 
         private void OnEnable()
         {
@@ -27,11 +30,12 @@ namespace Project.Game
 
         private void Start()
         {
-            _virtualCamera = GetComponent<CinemachineVirtualCamera>();
+            _virtualCamera = GetComponent<CinemachineVirtualCamera>(); // Gets the Cinemachine virtual camera component.
         }
 
         private void Update()
         {
+            // Updates the camera shake effect based on the elapsed time.
             if (_shakeElapsedTime > 0)
             {
                 _shakeElapsedTime -= Time.deltaTime;
@@ -44,6 +48,10 @@ namespace Project.Game
             }
         }
 
+        /// <summary>
+        /// Triggers the camera shake effect for a specified duration.
+        /// </summary>
+        /// <param name="duration">The duration of the camera shake effect.</param>
         public void ShakeCamera(float duration)
         {
             CinemachineBasicMultiChannelPerlin noise = _virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
@@ -52,11 +60,19 @@ namespace Project.Game
             _shakeElapsedTime = duration;
         }
 
+        /// <summary>
+        /// Handles the camera shake effect when a new cube is added during gameplay.
+        /// </summary>
+        /// <param name="isGameRunning">Indicates whether the game is currently running.</param>
         private void OnAddNewCube(bool isGameRunning)
         {
             ShakeCamera(Duration);
         }
 
+        /// <summary>
+        /// Handles the camera shake effect when a collision with a wall occurs during gameplay.
+        /// </summary>
+        /// <param name="isGameRunning">Indicates whether the game is currently running.</param>
         private void OnCollisionWall(bool isGameRunning)
         {
             ShakeCamera(Duration);

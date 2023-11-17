@@ -9,6 +9,9 @@ using UnityEditor;
 
 namespace Project.Managing
 {
+    /// <summary>
+    /// Manager class for handling user interaction with menus, authentication, and navigation within the application.
+    /// </summary>
     public class MenuManager : MonoBehaviour
     {
         [SerializeField] private TMP_InputField _usernameField;

@@ -2,7 +2,9 @@ using TMPro;
 using UnityEngine;
 
 namespace Project.UI.Menu
-{
+{    /// <summary>
+     /// Represents a UI row item for displaying user records, including ID, username, and highest score.
+     /// </summary>
     public class RecordRowItemUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _id;

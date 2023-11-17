@@ -12695,6 +12695,11 @@ PrefabInstance:
       propertyPath: userManager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5102354085784589627, guid: 814f59af25be51842b7a72d2852c50b7,
+        type: 3}
+      propertyPath: _regexPattern
+      value: '[^a-zA-Z0-9]'
+      objectReference: {fileID: 0}
     - target: {fileID: 5453458568962752415, guid: 814f59af25be51842b7a72d2852c50b7,
         type: 3}
       propertyPath: _activate
