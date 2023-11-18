@@ -32,7 +32,7 @@ namespace Project.Database
         {
             get => _userData;
            
-            set
+            private set
             {
                 _userData = value;
                 PlayerPrefs.SetString("username", value.Username);
