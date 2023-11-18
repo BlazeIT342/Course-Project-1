@@ -827,7 +827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1625241c521bcfc4987b2bf114ccf7d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regexPattern: ^[\\S]{0,20}$$
+  _regexPattern: 
 --- !u!1 &1803591815652059855
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,8 +975,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0062f5a6b0b98f045a874f48de359a1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate: {fileID: 3475434635115818274}
-  deactivate: {fileID: 5963075645561667315}
+  _activate: {fileID: 0}
+  _deactivate: {fileID: 0}
 --- !u!1 &2125957378021278787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,8 +1508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0062f5a6b0b98f045a874f48de359a1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activate: {fileID: 5963075645561667315}
-  deactivate: {fileID: 3475434635115818274}
+  _activate: {fileID: 0}
+  _deactivate: {fileID: 0}
 --- !u!1 &3136778745871541969
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,7 +2615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1625241c521bcfc4987b2bf114ccf7d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regexPattern: '[^a-zA-Z0-9]'
+  _regexPattern: 
 --- !u!1 &8571955212047805941
 GameObject:
   m_ObjectHideFlags: 0

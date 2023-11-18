@@ -384,7 +384,7 @@ namespace Project.Database
 
             if (!Regex.IsMatch(username, pattern))
             {
-                throw new ArgumentException("Invalid username. It should consist of 5-20 alphanumeric characters and contain no white spaces.");
+                throw new ArgumentException("Invalid username. It should consist of 5-20 alphanumeric characters.");
             }
         }
 
@@ -399,7 +399,7 @@ namespace Project.Database
 
             if (!Regex.IsMatch(password, pattern))
             {
-                throw new ArgumentException("Invalid password. It should be 4-20 characters long and contain no white spaces.");
+                throw new ArgumentException("Invalid password. It should be 4-20 characters long.");
             }
         }
 
