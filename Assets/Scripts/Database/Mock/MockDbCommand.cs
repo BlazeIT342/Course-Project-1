@@ -35,7 +35,6 @@ namespace Project.Database.Mock
 
         public int ExecuteNonQuery()
         {
-            // Возвращаем произвольное значение для имитации выполнения команды
             return 1;
         }
 
