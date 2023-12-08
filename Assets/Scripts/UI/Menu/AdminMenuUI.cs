@@ -12,7 +12,7 @@ namespace Project.UI.Menu
         [SerializeField] private AdminRowItemUI _adminRowItemUI;
         [SerializeField] private Transform _contentRoot;
 
-        private DatabaseController _databaseController;
+        private DatabaseManager _databaseManager;
 
         private List<UserData> _users = new();
         private List<UserData> Users
@@ -36,7 +36,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
-            _databaseController = DatabaseManager.Instance.DatabaseController;
+            _databaseManager = DatabaseManager.Instance;
 
             _idSortDesc = false;
             _usernameSortDesc = false;
@@ -55,7 +55,7 @@ namespace Project.UI.Menu
 
             foreach (var user in Users)
             {
-                if (user.Id == _databaseController.CurrentUserData.Id)
+                if (user.Id == _databaseManager.DatabaseController.CurrentUserData.Id)
                     continue;
 
                 AdminRowItemUI uiInstance = Instantiate(_adminRowItemUI, _contentRoot);
@@ -65,28 +65,28 @@ namespace Project.UI.Menu
 
         public void SortByID()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Id", _idSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Id", _idSortDesc);
 
             _idSortDesc = !_idSortDesc;
         }
 
         public void SortByUsername()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Username", _usernameSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Username", _usernameSortDesc);
 
             _usernameSortDesc = !_usernameSortDesc;
         }
 
         public void SortByPassword()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Password", _passwordSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Password", _passwordSortDesc);
 
             _passwordSortDesc = !_passwordSortDesc;
         }
 
         public void SortByRole()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Role", _roleSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Role", _roleSortDesc);
 
             _roleSortDesc = !_roleSortDesc;
         }

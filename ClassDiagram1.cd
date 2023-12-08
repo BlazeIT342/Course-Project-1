@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Project.Managing.MenuManager">
+    <Position X="6.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BGCAQCAAIAAAAgIAAAABAAAAAAKBCACAQBQAAQgACQA=</HashCode>
+      <FileName>Assets\Scripts\Managing\MenuManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Managing.ScoreManager">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAgAAAQAJAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Managing\ScoreManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Managing.DatabaseManager">
+    <Position X="1.5" Y="6" Width="2" />
+    <AssociationLine Name="DatabaseController" Type="Project.Database.DatabaseController" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="6" />
+        <Point X="1.5" Y="4.747" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Managing\DatabaseManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DatabaseController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Project.Managing.GameEventManager">
+    <Position X="8.5" Y="3.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Project.Managing.GameEventManager.GameEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Managing\GameEventManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAABAAAAAAAgAABBAAAAQAABAgAQQEA=</HashCode>
+      <FileName>Assets\Scripts\Managing\GameEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.Database.DatabaseController">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <AssociationLine Name="CurrentUserData" Type="Project.Database.UserData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="3.062" />
+        <Point X="3.375" Y="3.062" />
+        <Point X="3.375" Y="0.969" />
+        <Point X="4.5" Y="0.969" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAgBIgAAAAgAABAQCAQAAAEgAEAABIAAAAAAIIAAAA=</HashCode>
+      <FileName>Assets\Scripts\Database\DatabaseController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CurrentUserData" />
+    </ShowAsAssociation>
+  </Class>
+  <Struct Name="Project.Database.UserData">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAEQAAAAAAAAAAAAACAAAAAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Database\UserData.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

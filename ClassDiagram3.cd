@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Project.Managing.DatabaseManager">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Managing\DatabaseManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UI.Menu.AdminMenuUI">
+    <Position X="3.5" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQEAAAgAAAEAAAAAAAAAIIBARAgAAAACCEI=</HashCode>
+      <FileName>Assets\Scripts\UI\Menu\AdminMenuUI.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_databaseManager" />
+      <Field Name="_adminRowItemUI" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Project.UI.Menu.AdminRowItemUI">
+    <Position X="7" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAAAABAAAAAAAAAAAAAAAABAggAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\Menu\AdminRowItemUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UI.Menu.RecordMenuUI">
+    <Position X="6" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAACAAAAEAAAgAAAAAAEAAAAQAIIBAQAAAAAAACEI=</HashCode>
+      <FileName>Assets\Scripts\UI\Menu\RecordMenuUI.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_databaseManager" />
+      <Field Name="_recordRowItemUI" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Project.UI.Menu.RecordRowItemUI">
+    <Position X="9.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAASAAAABAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\Menu\RecordRowItemUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Project.UI.Menu.UserDataUI">
+    <Position X="1" Y="4.5" Width="1.75" />
+    <AssociationLine Name="_databaseManager" Type="Project.Managing.DatabaseManager">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.053" Y="0.817" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQQIAAAAAAAggAAAAAAAAAAAAABAAAIQAAFAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\UI\Menu\UserDataUI.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_databaseManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

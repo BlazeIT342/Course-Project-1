@@ -14,7 +14,7 @@ namespace Project.Database
     /// </summary>
     /// <remarks>
     /// The DatabaseController class provides functionality for user registration, login, password updates,
-    /// high-score record management, and other database-related operations. It utilizes SQLite as the database engine.
+    /// high-_score record management, and other database-related operations. It utilizes SQLite as the database engine.
     /// </remarks>
     public class DatabaseController
     {
@@ -290,12 +290,12 @@ namespace Project.Database
         }
 
         /// <summary>
-        /// Attempts to set a new high score record for the currently logged-in user.
+        /// Attempts to set a new high _score record for the currently logged-in user.
         /// </summary>
-        /// <param name="score">The new score to set as the user's record.</param>
+        /// <param name="score">The new _score to set as the user's record.</param>
         /// <remarks>
-        /// This function compares the provided score with the user's current record.
-        /// If the provided score is higher, it updates the record in the database, in-memory, and displays a congratulatory message.
+        /// This function compares the provided _score with the user's current record.
+        /// If the provided _score is higher, it updates the record in the database, in-memory, and displays a congratulatory message.
         /// </remarks>
         public void TrySetNewRecord(int score)
         {

@@ -1,6 +1,6 @@
 namespace Project.Database
 {    /// <summary>
-     /// Represents a structure containing user data, including ID, username, password, role, and highest score.
+     /// Represents a structure containing user data, including ID, username, password, role, and highest _score.
      /// </summary>
     public struct UserData
     {

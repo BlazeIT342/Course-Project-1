@@ -25,13 +25,13 @@ namespace Project.Managing
         [SerializeField] private GameObject _adminMenu;
         [SerializeField] private Button _adminButton;
 
-        private DatabaseController _databaseController;
+        private DatabaseManager _databaseManager;
 
         private void OnEnable()
         {
-            _databaseController = DatabaseManager.Instance.DatabaseController;
+            _databaseManager = DatabaseManager.Instance;
 
-            if (!string.IsNullOrEmpty(_databaseController.CurrentUserData.Username))
+            if (!string.IsNullOrEmpty(_databaseManager.DatabaseController.CurrentUserData.Username))
             {
                 OnLoadMenuToggle();
             }
@@ -39,7 +39,7 @@ namespace Project.Managing
 
         public void OnRegisterButtonClick()
         {
-            var registrationSuccess = _databaseController.TryRegisterUser(_usernameField.text, _passwordField.text, _administratorToggle.isOn);
+            var registrationSuccess = _databaseManager.DatabaseController.TryRegisterUser(_usernameField.text, _passwordField.text, _administratorToggle.isOn);
 
             if (registrationSuccess)
             {
@@ -49,7 +49,7 @@ namespace Project.Managing
 
         public void OnLoginButtonClick()
         {
-            var loginSuccess = _databaseController.TryLoginUser(_usernameField.text, _passwordField.text);
+            var loginSuccess = _databaseManager.DatabaseController.TryLoginUser(_usernameField.text, _passwordField.text);
 
             if (loginSuccess)
             {
@@ -62,7 +62,7 @@ namespace Project.Managing
             _registrationMenu.SetActive(!_registrationMenu.activeSelf);
             ToggleMainMenu();
 
-            _adminButton.gameObject.SetActive(_databaseController.CurrentUserData.Role == "Administrator");
+            _adminButton.gameObject.SetActive(_databaseManager.DatabaseController.CurrentUserData.Role == "Administrator");
         }
 
         public void OnPersonalPageToggle()
@@ -91,7 +91,7 @@ namespace Project.Managing
 
         public void OnResetData()
         {
-            _databaseController.ClearUserData();
+            _databaseManager.DatabaseController.ClearUserData();
         }
 
         public void OnPlayButtonClick()
@@ -103,7 +103,7 @@ namespace Project.Managing
         {
             _accountData.SetActive(!_accountData.activeSelf);
             _registrationMenu.SetActive(!_registrationMenu.activeSelf);
-            _databaseController.ClearCurrentUserData();
+            _databaseManager.DatabaseController.ClearCurrentUserData();
         }
 
         public void Quit()

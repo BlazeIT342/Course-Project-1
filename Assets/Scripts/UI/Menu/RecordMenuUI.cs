@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace Project.UI.Menu
 {    /// <summary>
-     /// Represents the UI for displaying and sorting user records, including sorting by ID, username, and highest score.
+     /// Represents the UI for displaying and sorting user records, including sorting by ID, username, and highest _score.
      /// </summary>
     public class RecordMenuUI : MonoBehaviour
     {
         [SerializeField] private RecordRowItemUI _recordRowItemUI;
         [SerializeField] private Transform _contentRoot;
 
-        private DatabaseController _databaseController;
+        private DatabaseManager _databaseManager;
 
         private List<UserData> _users = new();
         private List<UserData> Users
@@ -35,7 +35,7 @@ namespace Project.UI.Menu
 
         private void OnEnable()
         {
-            _databaseController = DatabaseManager.Instance.DatabaseController;
+            _databaseManager = DatabaseManager.Instance;
 
             _idSortDesc = false;
             _usernameSortDesc = false;
@@ -60,21 +60,21 @@ namespace Project.UI.Menu
 
         public void SortByRecord()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Record", _recordSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Record", _recordSortDesc);
 
             _recordSortDesc = !_recordSortDesc;
         }
 
         public void SortByID()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Id", _idSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Id", _idSortDesc);
 
             _idSortDesc = !_idSortDesc;
         }
 
         public void SortByUsername()
         {
-            Users = _databaseController.GetAllUsersSortedByParameter("Username", _usernameSortDesc);
+            Users = _databaseManager.DatabaseController.GetAllUsersSortedByParameter("Username", _usernameSortDesc);
 
             _usernameSortDesc = !_usernameSortDesc;
         }

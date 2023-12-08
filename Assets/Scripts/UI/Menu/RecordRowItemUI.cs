@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Project.UI.Menu
 {    /// <summary>
-     /// Represents a UI row item for displaying user records, including ID, username, and highest score.
+     /// Represents a UI row item for displaying user records, including ID, username, and highest _score.
      /// </summary>
     public class RecordRowItemUI : MonoBehaviour
     {

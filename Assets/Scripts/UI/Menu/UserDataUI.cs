@@ -17,11 +17,11 @@ namespace Project.UI.Menu
         [SerializeField] private TMP_InputField _passwordField;
         [SerializeField] private Button _passwordButton;
 
-        private DatabaseController _databaseController;
+        private DatabaseManager _databaseManager;
 
         private void OnEnable()
         {
-            _databaseController = FindObjectOfType<DatabaseManager>().DatabaseController;
+            _databaseManager = DatabaseManager.Instance;
             _passwordButton.onClick.AddListener(ChangePassword);
             UpdateUI();
         }
@@ -34,7 +34,7 @@ namespace Project.UI.Menu
 
         private void ChangePassword()
         {
-            var canChangePassword = _databaseController.UpdatePassword(_passwordField.text);
+            var canChangePassword = _databaseManager.DatabaseController.UpdatePassword(_passwordField.text);
 
             if (canChangePassword)
             {
@@ -44,7 +44,7 @@ namespace Project.UI.Menu
 
         private void UpdateUI()
         {
-            var user = _databaseController.CurrentUserData;
+            var user = _databaseManager.DatabaseController.CurrentUserData;
 
             _accountId.text = "Account ID: " + user.Id;
             _name.text = "Username: " + user.Username;
