@@ -16,16 +16,20 @@ namespace Project.Game
         private float _shakeElapsedTime = 0f;        // The elapsed time for the camera shake effect.
         private CinemachineVirtualCamera _virtualCamera; // Reference to the Cinemachine virtual camera.
 
+        private GameEventManager _gameEventManager;
+
         private void OnEnable()
         {
-            GameEventManager.Instance.OnAddNewCube.AddListener(OnAddNewCube);
-            GameEventManager.Instance.OnCollisionWall.AddListener(OnCollisionWall);
+            _gameEventManager = GameEventManager.Instance;
+
+            _gameEventManager.OnAddNewCube.AddListener(OnAddNewCube);
+            _gameEventManager.OnCollisionWall.AddListener(OnCollisionWall);
         }
 
         private void OnDisable()
         {
-            GameEventManager.Instance.OnAddNewCube.RemoveListener(OnAddNewCube);
-            GameEventManager.Instance.OnCollisionWall.RemoveListener(OnCollisionWall);
+            _gameEventManager.OnAddNewCube.RemoveListener(OnAddNewCube);
+            _gameEventManager.OnCollisionWall.RemoveListener(OnCollisionWall);
         }
 
         private void Start()

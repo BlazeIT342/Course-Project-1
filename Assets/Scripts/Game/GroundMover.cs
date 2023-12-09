@@ -16,15 +16,18 @@ namespace Project.Game
         [SerializeField] private List<GameObject> _grounds = new();      // List of instantiated ground elements.
 
         private bool _isReadyToRespawn = true; // Indicates whether it's ready to respawn a new ground element.
+        private GameEventManager _gameEventManager;
 
         private void OnEnable()
         {
-            GameEventManager.Instance.OnCollisionWall.AddListener(OnCollisionWall);
+            _gameEventManager = GameEventManager.Instance;
+
+            _gameEventManager.OnCollisionWall.AddListener(OnCollisionWall);
         }
 
         private void OnDisable()
         {
-            GameEventManager.Instance.OnCollisionWall.RemoveListener(OnCollisionWall);
+            _gameEventManager.OnCollisionWall.RemoveListener(OnCollisionWall);
         }
 
         /// <summary>

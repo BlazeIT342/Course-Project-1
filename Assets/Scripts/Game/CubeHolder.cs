@@ -19,17 +19,20 @@ namespace Project.Game
         [SerializeField] private List<Cube> _cubeList = new List<Cube>(); // List to keep track of instantiated cubes.
 
         private bool _isGameRunning = true; // Indicates whether the game is currently running.
+        private GameEventManager _gameEventManager;
 
         private void OnEnable()
         {
-            GameEventManager.Instance.OnAddNewCube.AddListener(OnAddNewCube);
-            GameEventManager.Instance.OnGameEnd.AddListener(OnGameEnd);
+            _gameEventManager = GameEventManager.Instance;
+
+            _gameEventManager.OnAddNewCube.AddListener(OnAddNewCube);
+            _gameEventManager.OnGameEnd.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-            GameEventManager.Instance.OnAddNewCube.RemoveListener(OnAddNewCube);
-            GameEventManager.Instance.OnGameEnd.RemoveListener(OnGameEnd);
+            _gameEventManager.OnAddNewCube.RemoveListener(OnAddNewCube);
+            _gameEventManager.OnGameEnd.RemoveListener(OnGameEnd);
         }
 
         /// <summary>

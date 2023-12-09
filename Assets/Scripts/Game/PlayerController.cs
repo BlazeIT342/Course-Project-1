@@ -19,17 +19,20 @@ namespace Project.Game
 
         private bool _isGameRunning;               // Indicates whether the game is currently running.
         private float _moveInputHorizontal;        // Horizontal input value for player movement.
+        private GameEventManager _gameEventManager;
 
         private void OnEnable()
         {
-            GameEventManager.Instance.OnGameStart.AddListener(OnGameStart);
-            GameEventManager.Instance.OnGameEnd.AddListener(OnGameEnd);
+            _gameEventManager = GameEventManager.Instance;
+
+            _gameEventManager.OnGameStart.AddListener(OnGameStart);
+            _gameEventManager.OnGameEnd.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-            GameEventManager.Instance.OnGameStart.RemoveListener(OnGameStart);
-            GameEventManager.Instance.OnGameEnd.RemoveListener(OnGameEnd);
+            _gameEventManager.OnGameStart.RemoveListener(OnGameStart);
+            _gameEventManager.OnGameEnd.RemoveListener(OnGameEnd);
         }
 
         /// <summary>

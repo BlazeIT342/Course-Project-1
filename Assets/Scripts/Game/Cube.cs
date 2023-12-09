@@ -8,12 +8,19 @@ namespace Project.Game
     /// </summary>
     public class Cube : MonoBehaviour
     {
+        private GameEventManager _gameEventManager;
+
+        private void OnEnable()
+        {
+            _gameEventManager = GameEventManager.Instance;
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.CompareTag("Wall"))
             {
                 // Signals the game manager that a collision with a wall occurred.
-                GameEventManager.Instance.CollisionWall();
+                _gameEventManager.CollisionWall();
 
                 // Initiates the removal of the cube from the CubeHolder component.
                 StartCoroutine(GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<CubeHolder>().RemoveCube(this));
@@ -22,7 +29,7 @@ namespace Project.Game
             if (collision.gameObject.CompareTag("CubePickup"))
             {
                 // Signals the game manager to add a new cube.
-                GameEventManager.Instance.AddNewCube();
+                _gameEventManager.AddNewCube();
 
                 // Destroys the CubePickup object upon collision.
                 Destroy(collision.gameObject);

@@ -13,6 +13,7 @@ namespace Project.UI.Game
         [SerializeField] private GameObject _endMenu;
 
         private bool _isFirstTouch = false;
+        private GameEventManager _gameEventManager;
 
         private void Awake()
         {
@@ -23,21 +24,23 @@ namespace Project.UI.Game
 
         private void OnEnable()
         {
-            GameEventManager.Instance.OnGameStart.AddListener(OnGameStart);
-            GameEventManager.Instance.OnGameEnd.AddListener(OnGameEnd);
+            _gameEventManager = GameEventManager.Instance;
+
+            _gameEventManager.OnGameStart.AddListener(OnGameStart);
+            _gameEventManager.OnGameEnd.AddListener(OnGameEnd);
         }
 
         private void OnDisable()
         {
-            GameEventManager.Instance.OnGameStart.RemoveListener(OnGameStart);
-            GameEventManager.Instance.OnGameEnd.RemoveListener(OnGameEnd);
+            _gameEventManager.OnGameStart.RemoveListener(OnGameStart);
+            _gameEventManager.OnGameEnd.RemoveListener(OnGameEnd);
         }
 
         private void Update()
         {
             if (Input.GetMouseButtonDown(0) && !_isFirstTouch)
             {
-                GameEventManager.Instance.StartGame();
+                _gameEventManager.StartGame();
             }
         }
 

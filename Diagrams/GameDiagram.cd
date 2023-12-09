@@ -1,60 +1,122 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Project.Game.CameraShake">
+    <Position X="2.75" Y="4.25" Width="1.75" />
+    <AssociationLine Name="_gameEventManager" Type="Project.Managing.GameEventManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.688" Y="4.25" />
+        <Point X="3.688" Y="3.887" />
+        <Point X="6.5" Y="3.887" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.363" Y="0.126" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AARAAAAAACACAAAAAAAAAEgABEABBAAIAAABAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Game\CameraShake.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_gameEventManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Project.Managing.GameEventManager">
+    <Position X="6.5" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Project.Managing.GameEventManager.GameEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Managing\GameEventManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAABAAAAAAAgAABBAAAAQAABAgAQQEA=</HashCode>
+      <FileName>Assets\Scripts\Managing\GameEventManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Project.Game.CameraFacing">
-    <Position X="5" Y="4.25" Width="1.75" />
+    <Position X="2.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\Game\CameraFacing.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project.UI.Game.GameMenuUI">
-    <Position X="7" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQAAAABAAAAAAABAAEAAAAAAAAAAAAoAAAAARAASEA=</HashCode>
-      <FileName>Assets\Scripts\UI\Game\GameMenuUI.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Project.Game.CameraShake">
-    <Position X="5" Y="0.5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AARAAAAAACACAAAAAAAAAEgABEABAAAIAAABAAAACAA=</HashCode>
-      <FileName>Assets\Scripts\Game\CameraShake.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Project.Game.Cube">
-    <Position X="2.75" Y="4.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
-      <FileName>Assets\Scripts\Game\Cube.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Project.Game.CubeHolder">
-    <Position X="2.75" Y="0.5" Width="2" />
+    <Position X="13" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AEAAgAIAAAAAAAAAAABEAAAAGABBQAAIAAAAAAAASAA=</HashCode>
+      <HashCode>AEAAgAIAAAAAAAAAAABEAAAAGABBRAAIAAAAAAAASAA=</HashCode>
       <FileName>Assets\Scripts\Game\CubeHolder.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_gameEventManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Project.Game.Cube">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Game\Cube.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_gameEventManager" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Project.Game.GameOver">
-    <Position X="7" Y="4.25" Width="1.5" />
+    <Position X="6.5" Y="6.5" Width="1.75" />
+    <AssociationLine Name="_gameEventManager" Type="Project.Managing.GameEventManager">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.121" Y="0.743" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIAAAAAAAACAA=</HashCode>
       <FileName>Assets\Scripts\Game\GameOver.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_gameEventManager" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Project.Game.GroundMover">
-    <Position X="8.75" Y="0.5" Width="2" />
+    <Position X="10.75" Y="4.25" Width="2" />
+    <AssociationLine Name="_gameEventManager" Type="Project.Managing.GameEventManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.75" Y="4.25" />
+        <Point X="11.75" Y="3.887" />
+        <Point X="8.25" Y="3.887" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.358" Y="0.143" Height="0.182" Width="1.503" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAgAAAAAAAAQAAAAIICABAAAACQA=</HashCode>
+      <HashCode>AAAAAEAAAAAAAAAAAgAAAAAAAAQABAAIICABAAAACQA=</HashCode>
       <FileName>Assets\Scripts\Game\GroundMover.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_gameEventManager" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Project.Game.PlayerController">
     <Position X="0.5" Y="0.5" Width="2" />
+    <AssociationLine Name="_gameEventManager" Type="Project.Managing.GameEventManager" FixedFromPoint="true">
+      <Path>
+        <Point X="2.5" Y="1" />
+        <Point X="6.5" Y="1" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.308" Y="0.104" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AQQAAAFAIAAAAAAJAQAAAAQAAABAAAAIBAAABAAAWQA=</HashCode>
+      <HashCode>AQQAAAFAIAAAAAAJAQAAAAQAAABABAAIBAAABAAAWQA=</HashCode>
       <FileName>Assets\Scripts\Game\PlayerController.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_gameEventManager" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

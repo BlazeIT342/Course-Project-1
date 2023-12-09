@@ -8,11 +8,18 @@ namespace Project.Game
     /// </summary>
     public class GameOver : MonoBehaviour
     {
+        private GameEventManager _gameEventManager;
+
+        private void OnEnable()
+        {
+            _gameEventManager = GameEventManager.Instance;
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.CompareTag("Wall"))
             {
-                GameEventManager.Instance.EndGame();
+                _gameEventManager.EndGame();
             }
         }
     }
